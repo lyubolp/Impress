@@ -1,0 +1,54 @@
+#topBar
+{
+    width:100vw;
+    height: 10vh;
+    background-color: #2F2E2E;
+    position: absolute;
+    top:0vh;
+    left:0vw;
+}
+#rightBar
+{
+    width:13vw;
+    height: 90vh;
+    background-color: #2F2E2E;
+    position: absolute;
+    top:10vh;
+    right:0vw;
+}
+
+#leftBar
+{
+    width:7vw;
+    height: 90vh;
+    background-color: #2F2E2E;
+    position: absolute;
+    top:10vh;
+    left:0vw;
+}
+
+#curSlide
+{
+    position: absolute;
+    top:13vh;
+    left:11vw;
+    visibility:initial;
+}
+.slide
+{
+    width:72vw;
+    height: 40.5vw;
+    background-color: white;
+    visibility: hidden;
+}
+.slideThumb
+{
+    width:8vw;
+    height: 4.5vw;
+    background-color: white;
+}
+#slideThumb1
+{
+    position: absolute;
+    left:2.5vw;
+}
