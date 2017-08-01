@@ -52,3 +52,20 @@
     position: absolute;
     left:2.5vw;
 }
+.textBox
+{
+    /*width:100%;*/
+    font-size: 1vw;
+    margin-left: 0.5vw;
+    margin-top:0.5vw;
+    border:none;
+}
+.textInputWrapper
+{
+    opacity: 0.9;
+    border:5px dashed #787171;
+}
+/* .staticText
+{
+
+} */

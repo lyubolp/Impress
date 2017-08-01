@@ -1,20 +1,21 @@
 <!DOCTYPE html>
 
 <html>
+
 <head>
     <!-- Мета тагове-->
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    
+
     <!-- Икона на приложението -->
     <link rel="shortcut icon" href="Icon.ico" />
-    
+
     <!-- Библиотеки -->
     <script src="Libs/jquery-3.2.1.min.js"></script>
-    
+    <script src="Libs/jquery-ui.js"></script>
     <!-- Заглавие на страницата -->
     <title>Impress </title>
-    
+
     <!-- CSS файлове -->
     <link rel="stylesheet" href="CSS/style.css">
     <link rel="stylesheet" href="CSS/UI.css">
@@ -22,29 +23,33 @@
     <!-- JavaScript файлове -->
     <!--<script src="JS/jQueryCode.js"></script>-->
     <script src="JS/userSide.js"></script>
-
-   
+    <script src="JS/objectTypes.js"></script>
 </head>
 
 <body id="mainBody" onload="startNew()">
-   <div id="topBar">
-       <div id="slideTools">
-        <div id="addBG">Промяна на фона</div>
-       </div>
-   </div>
-   <div id="leftBar">
-       <div id="btnNewSlide" onmousedown="addNewSlide()">Нов слайд</div>
-   </div>
-   <div id="rightBar">
-       <!--<div id="slideThumb1" class="slideThumb"></div>-->
-       <div id ="prevSlide" onclick="prevSlide()">Предишен слайд</div> <!--временен бутон за пускане на предишния слайд--> <br/>
-       <div id ="nextSlide" onclick="nextSlide()">Следващ слайд</div> <!--временен бутон за пускане на следващ слайд--> <br/>
-       <div id="curSlideNum">0</div> <!--номер на текущ слайд-->
-   </div>
+    <div id="topBar">
+        <div id="slideTools">
+            <div id="addBG">Промяна на фона</div>
+        </div>
+    </div>
+    <div id="leftBar">
+        <div id="btnNewSlide" onmousedown="addNewSlide()">Нов слайд</div> <br/>
+        <div id="btnAddTextField" onmousedown="addTextField()">Добави текстово поле</div> <br/>
 
-   <!--<div id="slide_1" class="slide"></div>-->
+    </div>
+    <div id="rightBar">
+        <!--<div id="slideThumb1" class="slideThumb"></div>-->
+        <div id="prevSlide" onclick="prevSlide()">Предишен слайд</div>
+        <!--временен бутон за пускане на предишния слайд--><br/>
+        <div id="nextSlide" onclick="nextSlide()">Следващ слайд</div>
+        <!--временен бутон за пускане на следващ слайд--><br/>
+        <div id="curSlideNum">0</div>
+        <!--номер на текущ слайд-->
+    </div>
 
-   <div id="curSlide" class="slide"></div>
+    <!--<div id="slide_1" class="slide"></div>-->
+
+    <div id="curSlide" class="slide"> </div>
 </body>
 
 </html>
