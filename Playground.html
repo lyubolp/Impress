@@ -3,52 +3,70 @@
 <html>
 
 <head>
-  <!-- Мета тагове-->
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- Мета тагове-->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
 
-  <!-- Икона на приложението -->
-  <link rel="shortcut icon" href="Icon.ico" />
+    <!-- Икона на приложението -->
+    <link rel="shortcut icon" href="Icon.ico" />
 
-  <!-- Библиотеки -->
-  <script src="Libs/jquery-3.2.1.min.js"></script>
-  <script src="Libs/jquery-ui.js"></script>
-  <!-- Заглавие на страницата -->
-  <title>Impress </title>
+    <!-- Библиотеки -->
+    <!-- <script src="Libs/jquery-3.2.1.min.js"></script>
+    <script src="Libs/jquery-ui.js"></script> -->
 
-  <!-- CSS файлове -->
-  <link rel="stylesheet" href="CSS/style.css">
-  <link rel="stylesheet" href="CSS/UI.css">
+    <script src="https://code.jquery.com/jquery-1.12.4.js"></script>
+    <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+    <!-- Заглавие на страницата -->
+    <title>Impress </title>
 
-  <!-- JavaScript файлове -->
+    <!-- CSS файлове -->
+    <link rel="stylesheet" href="CSS/style.css">
+    <link rel="stylesheet" href="https://code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+    <link rel="stylesheet" href="CSS/UI.css">
 
-  <script src="JS/userSide.js"></script>
-  <script src="JS/objectTypes.js"></script>
+    <!-- JavaScript файлове -->
 
-  <script>
-    function testCode() {
-      var textDiv = document.createElement("div");
+    <script src="JS/userSide.js"></script>
+    <script src="JS/objectTypes.js"></script>
+    <style>
+        #testBtn {
+            background-color: #3399ff;
+            width: 10vw;
+            height: 5vw;
+        }
 
-      textDiv.id = "1";
-      textDiv.classList.add("staticText");
+        .img {
+            width: 100%;
+            height: 100%;
+        }
 
+        .testeditImg {
+            border: 5px dashed #787171;
+        }
 
+        #testBox {
+            width: 200px;
+            height: 200px;
+            background-color: #E57220;
+        }
+    </style>
+    <script>
+        function testCode() {
+            document.getElementById("imgContainer").style.width = "600px";
+            console.log(document.getElementById("testImg").width);
 
-      textDiv.style.fontSize = "1vw";
-      textDiv.style = "position:absolute;left:10vw;top:5vw;width:13vw;height:10vw;max-width:10vw;word-wrap: break-word;";
-
-      textDiv.innerHTML = "Hello world! This is a very long paragrah. This is used to test some things! "
-
-      textDiv.onmousedown = textBoxClicked;
-      textDiv.onblur = textBoxLoseFocus;
-      //textDiv.tabIndex = 1;
-
-      document.getElementById("mainBody").appendChild(textDiv);
-    }
-  </script>
+        }
+        $(function () {
+            $("#imgContainer").resizable();
+            $("#imgContainer").draggable();
+        });
+    </script>
 </head>
 
-<body id="mainBody" onload = "testCode()">
+<body id="mainBody" onload="testCode()">
+    <div id="imgContainer" class="testeditImg" draggable="true">
+        <img src="testImg.png" id="testImg" class="img" />
+    </div>
 
 
 </body>

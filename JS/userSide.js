@@ -73,6 +73,7 @@ function drawSlide(slideObjToDraw) {
     curSlide = slideObjToDraw.id;
     document.getElementById("curSlideNum").innerText = curSlide; //Временен код, който показва номера на текущия слайд
     drawText(slideObjToDraw);
+    drawImg(slideObjToDraw);
 }
 //Добавя нов слайд-обект към колекцията слайдове
 function addNewSlide() {
@@ -86,21 +87,23 @@ function focusOnSlide() {
     textBoxLoseFocus();
 }
 
+function redrawSlide() {
+    //Тестова функция
+    document.getElementById("curSlide").innerHTML = "";
 
+    drawSlide(slideObjs[curSlide]);
+}
 
 //*----------------------------------------*
 //Функции на текстовото поле
 //*----------------------------------------*
 //Функция за добавяне на текстово поле от потребителя
-function addTextField(){
-    console.log("1");
+function addTextField() {
     slideObjCount++;
     textObjs[slideObjCount] = new textObj(slideObjCount, "Click for text", 20, 15, 0, 3, 0, 0, 13, 15, "text");
     slideObjs[curSlide].items[slideObjs[curSlide].itemCount] = textObjs[slideObjCount];
     slideObjs[curSlide].itemCount++;
-    console.log(slideObjs[curSlide]);
     drawSlide(slideObjs[curSlide]);
-    console.log("3");
 }
 //Функция за чертане на текст върху слайд
 function drawText(slideObjsTextDraw) {
@@ -122,7 +125,7 @@ function drawText(slideObjsTextDraw) {
                 "vw;bottom:" + slideObjsTextDraw.items[i].positionB + "vw;" +
                 "width:" + slideObjsTextDraw.items[i].widthO + "vw;" + "height:" + slideObjsTextDraw.items[i].heightO + "vh;" +
                 "word-wrap: break-word;";
-//"max-width:" + slideObjsTextDraw.items[i].widthO + "vw;" +
+            //"max-width:" + slideObjsTextDraw.items[i].widthO + "vw;" +
             textDiv.innerHTML = slideObjsTextDraw.items[i].textC;
 
             textDiv.onmousedown = textBoxClicked;
@@ -147,7 +150,7 @@ function textBoxClicked(textBoxObj) {
         editTextPrototype.onblur = textBoxLoseFocus;
         editTextPrototype.autofocus = true;
 
-        
+
         editTextPrototype.style = "width:" + textBoxObj.target.style.width + "; height:" + textBoxObj.target.style.height + ";" +
             "margin:0px;";
 
@@ -170,40 +173,35 @@ function textBoxClicked(textBoxObj) {
 
 }
 
-//TODO:Да се пренапише тази функция
+
 
 //Функция за трансформиране на поле за редакция на текст в обикновенно текстово поле
 function textBoxLoseFocus(clickedObj) {
-    console.log("1");
     var x = document.getElementById("curSlide").children;
     for (i = 0; i < x.length; i++) //Преминава през всички елементи в текущия слайд, x[i] е обект в слайда
     {
         if (x[i].classList.contains("editText") == true) //Ако текущия обект е текстово поле за редакция
         {
-            
-            
+
+
             var curObjW, curObjH, curObjText, curObjT, curObjL;
 
-            if(x[i].children[0].style.width.slice(-2) == "vw")
-            {
-                curObjW = x[i].children[0].style.width.slice(0,2);
-                curObjH = x[i].children[0].style.height.slice(0,2);
+            if (x[i].children[0].style.width.slice(-2) == "vw") {
+                curObjW = x[i].children[0].style.width.slice(0, 2);
+                curObjH = x[i].children[0].style.height.slice(0, 2);
             }
-            else if(x[i].children[0].style.width.slice(-2) == "px")
-            {
-                curObjW = ((x[i].children[0].style.width.slice(0,-2))/w)*100;
-                curObjH = ((x[i].children[0].style.height.slice(0,-2))/h)*100;
-            }   
-            
+            else if (x[i].children[0].style.width.slice(-2) == "px") {
+                curObjW = ((x[i].children[0].style.width.slice(0, -2)) / w) * 100;
+                curObjH = ((x[i].children[0].style.height.slice(0, -2)) / h) * 100;
+            }
+
 
             curObjText = x[i].children[0].value;
             curObjT = (x[i].offsetTop / w) * 100;
             curObjL = (x[i].offsetLeft / w) * 100;
 
-            for (j = 0; j < slideObjs[curSlide].itemCount; j++)
-            {
-                if(x[i].id == "text_s" + slideObjs[curSlide].id + "_t" + slideObjs[curSlide].items[j].id)
-                {
+            for (j = 0; j < slideObjs[curSlide].itemCount; j++) {
+                if (x[i].id == "text_s" + slideObjs[curSlide].id + "_t" + slideObjs[curSlide].items[j].id && slideObjs[curSlide].items[j].type == "text") {
                     slideObjs[curSlide].items[j].widthO = curObjW;
                     slideObjs[curSlide].items[j].heightO = curObjH;
                     slideObjs[curSlide].items[j].textC = curObjText;
@@ -220,19 +218,19 @@ function textBoxLoseFocus(clickedObj) {
             x[i].style.height = x[i].children[0].style.height;
 
             x[i].removeChild(x[i].children[0]);
-            
+
             x[i].innerText = curObjText;
-            
+
             //x[i].onmousedown = textBoxClicked;
             //x[i].onblur = textBoxLoseFocus;
             //x[i].tabIndex = 1;
-            
+
 
             // textDiv.onmousedown = textBoxClicked;
             //textDiv.onblur = textBoxLoseFocus;
             //-------------------//
             //LEGACY CODE
-            
+
             /*var findTextInput = x[i].children[0];
             
             for (j = 0; j<slideObjs[curSlide].itemCount;j++)
@@ -297,3 +295,173 @@ function textBoxLoseFocus(clickedObj) {
 function resizeableBox() {
     alert("1");
 }
+
+
+//*----------------------------------------*
+//Функции на изображение
+//*----------------------------------------*
+
+function addImage() {
+    var imgUrl;
+    var inputObj = document.createElement("input");
+    inputObj.type = "file";
+    inputObj.id = "tempInput";
+    inputObj.hidden = true;
+
+    document.getElementById("curSlide").appendChild(inputObj);
+
+    document.getElementById("tempInput").click();
+
+    slideObjs[curSlide].itemCount++;
+    console.log(slideObjs[curSlide].itemCount);
+    var imgHolder = document.createElement("img");
+    imgHolder.id = "img_s" + slideObjs[curSlide].id + "_t" + slideObjs[curSlide].itemCount;
+    imgHolder.classList.add("imgContained");
+
+    var imgDivContainer = document.createElement("div");
+    imgDivContainer.id = "imgD_s" + slideObjs[curSlide].id + "_t" + slideObjs[curSlide].itemCount;
+
+    imgDivContainer.appendChild(imgHolder);
+
+    imgDivContainer.classList.add("staticImg");
+    document.getElementById("curSlide").appendChild(imgDivContainer);
+
+    document.getElementById('tempInput').onchange = function (evt) {
+        var tgt = evt.target || window.event.srcElement,
+            files = tgt.files;
+
+        // FileReader support
+        if (FileReader && files && files.length) {
+            var fr = new FileReader();
+            fr.onload = function () {
+
+                imgUrl = fr.result;
+                //imgHolder.src = fr.result;
+                imgHolder.src = fr.result;
+                imgDivContainer.onmousedown = imgClicked;
+                imgDivContainer.onblur = imgLoseFocus;
+                imgDivContainer.tabIndex = 1;
+                imgDivContainer.style.width = imgHolder.clientWidth + "px";
+                imgDivContainer.style.height = imgHolder.clientHeight + "px";
+                console.log(imgHolder.clientHeight);
+
+
+                //imgHolder.classList.add("staticImg");
+                //$("#" + imgDivContainer.id).draggable();
+
+                var imgObjS = new imgObj(slideObjs[curSlide].itemCount, imgHolder.src, 0, 0, 0, (imgHolder.clientWidth / w) * 100, (imgHolder.clientHeight / h) * 100);
+                slideObjs[curSlide].items[slideObjs[curSlide].itemCount-1] = imgObjS;
+                
+
+            }
+            fr.readAsDataURL(files[0]);
+
+
+        }
+
+        // Not supported
+        else {
+            // fallback -- perhaps submit the input to an iframe and temporarily store
+            // them on the server until the user's session ends.
+        }
+    }
+
+
+}
+function drawImg(slideObjsTextDraw) {
+    var curSlideObj = document.getElementById("curSlide");
+
+
+    for (i = 0; i < slideObjsTextDraw.itemCount; i++) {
+        if (slideObjsTextDraw.items[i].type == "img") {
+
+            var imgDivContainer = document.createElement("div");
+            imgDivContainer.id = "imgD_s" + slideObjs[curSlide].id + "_t" + slideObjs[curSlide].itemCount;
+            imgDivContainer.style = "position:absolute;left:" + slideObjsTextDraw.items[i].positionL + "vw;top:" + slideObjsTextDraw.items[i].positionT +
+                "vh;width:" + slideObjsTextDraw.items[i].widthO + "vw;" + "height:" + slideObjsTextDraw.items[i].heightO + "vh;"
+
+            console.log(slideObjsTextDraw.items[i].widthO);
+            var imgHolder = document.createElement("img");
+            imgHolder.id = "img_s" + slideObjs[curSlide].id + "_t" + slideObjs[curSlide].itemCount;
+            imgHolder.src = slideObjsTextDraw.items[i].imgUrl;
+            imgHolder.classList.add("imgContained");
+
+            imgDivContainer.onmousedown = imgClicked;
+            imgDivContainer.onblur = imgLoseFocus;
+            imgDivContainer.classList.add("staticImg");
+
+            imgDivContainer.tabIndex = 1;
+
+
+
+            imgDivContainer.appendChild(imgHolder);
+
+            curSlideObj.appendChild(imgDivContainer);
+        }
+    }
+}
+
+function imgClicked(imgObjClick) {
+    var x = imgObjClick.target.parentNode.classList.length;
+
+    if (imgObjClick.target.parentNode.classList.contains("staticImg") == true || imgObjClick.target.parentNode.classList.item(x - 1) == "staticImg") {
+
+        imgObjClick.target.parentNode.classList.add("editImg");
+        imgObjClick.target.parentNode.classList.remove("staticImg");
+
+
+        $("#" + imgObjClick.target.parentNode.id).draggable();
+        $("#" + imgObjClick.target.parentNode.id).resizable();
+
+
+        $("#" + imgObjClick.target.parentNode.id).on("dragstop", function (event, ui) { imgLoseFocus(); });
+    }
+
+    imgObjClick.target.parentNode.onblur = imgLoseFocus;
+    imgObjClick.target.parentNode.tabIndex = 1;
+}
+
+
+function imgLoseFocus() {
+
+    var x = document.getElementById("curSlide").children;
+    for (i = 0; i < x.length; i++) //Преминава през всички елементи в текущия слайд, x[i] е обект в слайда
+    {
+        if (x[i].classList.contains("editImg") == true) //Ако текущия обект е текстово поле за редакция
+        {
+            var curObjW, curObjH, curObjT, curObjL;
+
+
+
+            curObjT = (x[i].offsetTop / h) * 100;
+            curObjL = (x[i].offsetLeft / w) * 100;
+            
+             if (x[i].style.width.slice(-2) == "vw") {
+                curObjW = x[i].style.width.slice(0, 2);
+                curObjH = x[i].style.height.slice(0, 2);
+            }
+            else if (x[i].style.width.slice(-2) == "px") {
+                curObjW = ((x[i].style.width.slice(0, -2)) / w) * 100;
+                curObjH = ((x[i].style.height.slice(0, -2)) / h) * 100;
+            }
+            for (j = 0; j < slideObjs[curSlide].itemCount; j++) {
+               
+                if (x[i].id == "imgD_s" + slideObjs[curSlide].id + "_t" + slideObjs[curSlide].items[j].id && slideObjs[curSlide].items[j].type == "img") {
+                    
+                    slideObjs[curSlide].items[j].widthO = curObjW;
+                    slideObjs[curSlide].items[j].heightO = curObjH;
+                    slideObjs[curSlide].items[j].positionL = curObjL;
+                    slideObjs[curSlide].items[j].positionT = curObjT;
+                }
+            }
+            
+            x[i].classList.add("staticImg");
+            x[i].classList.remove("editImg");
+            x[i].onblur = imgLoseFocus;
+            x[i].tabIndex = 1;
+
+        }
+
+    }
+}
+

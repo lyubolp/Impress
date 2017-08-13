@@ -29,5 +29,15 @@ function textObj(idObj,textContent,positionTV,positionLV,fontFamilyV,fontSizeV,f
 }
 
 
-
+function imgObj(idObj, imgUrlV, positionTV, positionLV, effectV, widthV, heightV )
+{
+    this.id = idObj;
+    this.imgUrl = imgUrlV;
+    this.positionT = positionTV;
+    this.positionL = positionLV;
+    this.effect = effectV;
+    this.widthO = widthV;
+    this.heightO = heightV;
+    this.type = "img"
+}
 //

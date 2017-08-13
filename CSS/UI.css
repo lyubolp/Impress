@@ -69,3 +69,19 @@
 {
 
 } */
+
+.imgContained
+{
+    width:100%;
+    height: 100%;
+}
+.staticImg
+{
+    
+}
+
+.editImg
+{
+    border:5px dashed #787171;
+    /*opacity: 0.9;*/
+}
