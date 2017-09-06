@@ -85,3 +85,24 @@
     border:5px dashed #787171;
     /*opacity: 0.9;*/
 }
+
+.leftBarBtn
+{
+    text-align: center;
+}
+#openImpress
+{
+    height: 8vh;
+    width:8vh;
+    position: absolute;
+    left: 1vh;
+    top:1vh;
+}
+#saveImpress
+{
+    height: 8vh;
+    width:8vh;
+    position: absolute;
+    left: 9vh;
+    top:1vh;
+}

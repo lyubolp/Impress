@@ -8,7 +8,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
 
     <!-- Икона на приложението -->
-    <link rel="shortcut icon" href="Icon.ico" />
+    <!-- <link rel="shortcut icon" href="Icon.ico" /> -->
 
     <!-- Библиотеки -->
     <script src="Libs/jquery-3.2.1.min.js"></script>
@@ -31,13 +31,15 @@
 <body id="mainBody" onload="startNew()">
     <div id="topBar">
         <div id="slideTools">
-            <div id="saveImpress" onmousedown="saveData()">Запази</div>
+            <div id="openImpress" onmousedown="openData()"><img src="Icons/IconOpen.png" width="75%"/>Отвори</div>
+            <div id="saveImpress" onmousedown="saveData()"><img src="Icons/IconSave.png" width="75%"/>Запази</div>
         </div>
     </div>
     <div id="leftBar">
-        <div id="btnNewSlide" onmousedown="addNewSlide()">Нов слайд</div> <br/>
-        <div id="btnAddTextField" onmousedown="addTextField()">Добави текстово поле</div> <br/>
-        <div id="btnAddImg" onmousedown="addImage()">Добави изображение </div> <br/>
+        <br/>
+        <div id="btnNewSlide" class="leftBarBtn" onmousedown="addNewSlide()"><img src="Icons/IconNewSlide.png" width="75%"/>Нов слайд</div> <br/>
+        <div id="btnAddTextField" class="leftBarBtn" onmousedown="addTextField()"><img src="Icons/IconTextBox.png" width="75%"/>Добави текстово поле</div> <br/>
+        <div id="btnAddImg" class="leftBarBtn" onmousedown="addImage()"><img src="Icons/IconImage.png" width="75%"/>Добави изображение </div> <br/>
 
     </div>
     <div id="rightBar">

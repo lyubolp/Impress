@@ -38,6 +38,6 @@ function imgObj(idObj, imgUrlV, positionTV, positionLV, effectV, widthV, heightV
     this.effect = effectV;
     this.widthO = widthV;
     this.heightO = heightV;
-    this.type = "img"
+    this.type = "img";
 }
 //

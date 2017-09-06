@@ -25,10 +25,10 @@ $(function () {
 function startNew() {
     //Тестов код - добавят се два слайда, един син и един червен. Добавя текст към единия слайд. 
     slides = 1;
-    slideObjs[slides] = new slide(1, "#3399ff", 0, 0, 1);
+    slideObjs[slides] = new slide(1, "#3399ff", 0, 2, 1);
 
     slides = 2;
-    slideObjs[slides] = new slide(slides, "#B60303", 0, 0, 0);
+    slideObjs[slides] = new slide(slides, "#B60303", 0, 1, 0);
 
     slideObjCount++;
     textObjs[slideObjCount] = new textObj(slideObjCount, "Hello world! This is a very long paragrah. This is used to test some things! ", 10, 5, 0, 3, 0, 0, 13, 15, "text");
@@ -63,6 +63,7 @@ function nextSlide() {
         curSlide++;
         drawSlide(slideObjs[curSlide]);
         document.getElementById("curSlideNum").innerText = curSlide; //Временен код, който показва номера на текущия слайд
+
     }
 }
 //Изчертава текущия слайд на екрана
@@ -72,8 +73,21 @@ function drawSlide(slideObjToDraw) {
     curSlideObj.style.backgroundColor = slideObjToDraw.backColor;
     curSlide = slideObjToDraw.id;
     document.getElementById("curSlideNum").innerText = curSlide; //Временен код, който показва номера на текущия слайд
+    
+    if (slideObjs[curSlide].transition == 1) {
+        $("#" + curSlideObj.id).hide();
+        $("#" + curSlideObj.id).fadeIn();
+    }
+    else if (slideObjs[curSlide].transition == 2) {
+        var x = curSlideObj.clientWidth;
+        console.log(x);
+        curSlideObj.style.width = "0px";
+        $("#" + curSlideObj.id).animate({width:x + "px"});
+    }
+    document.getElementById("curSlideNum").innerText = curSlide; //Временен код, който показва номера на текущия слайд
     drawText(slideObjToDraw);
     drawImg(slideObjToDraw);
+
 }
 //Добавя нов слайд-обект към колекцията слайдове
 function addNewSlide() {
@@ -92,6 +106,15 @@ function redrawSlide() {
     document.getElementById("curSlide").innerHTML = "";
 
     drawSlide(slideObjs[curSlide]);
+}
+function nukeSlides() {
+    slides = 0;
+    curSlide = 0;
+    slideObjCount = 0;
+
+    slideObjs = [];
+    textObjs = [];
+    document.getElementById("curSlide").innerHTML = "";
 }
 
 //*----------------------------------------*
@@ -342,17 +365,20 @@ function addImage() {
                 imgDivContainer.onblur = imgLoseFocus;
                 imgDivContainer.tabIndex = 1;
                 imgDivContainer.style.width = imgHolder.clientWidth + "px";
-                imgDivContainer.style.height = imgHolder.clientHeight + "px";
-                console.log(imgHolder.clientHeight);
 
+
+
+                imgDivContainer.style.height = "400px";
+                console.log(imgHolder.clientHeight);
+                //CHANGED HERE
 
                 //imgHolder.classList.add("staticImg");
                 //$("#" + imgDivContainer.id).draggable();
 
                 var imgObjS = new imgObj(slideObjs[curSlide].itemCount, imgHolder.src, 0, 0, 0, (imgHolder.clientWidth / w) * 100, (imgHolder.clientHeight / h) * 100);
-                slideObjs[curSlide].items[slideObjs[curSlide].itemCount-1] = imgObjS;
-                
+                slideObjs[curSlide].items[slideObjs[curSlide].itemCount - 1] = imgObjS;
 
+                console.log(imgObjS);
             }
             fr.readAsDataURL(files[0]);
 
@@ -375,6 +401,8 @@ function drawImg(slideObjsTextDraw) {
     for (i = 0; i < slideObjsTextDraw.itemCount; i++) {
         if (slideObjsTextDraw.items[i].type == "img") {
 
+            console.log(slideObjs[1]);
+            console.log(curSlide);
             var imgDivContainer = document.createElement("div");
             imgDivContainer.id = "imgD_s" + slideObjs[curSlide].id + "_t" + slideObjs[curSlide].itemCount;
             imgDivContainer.style = "position:absolute;left:" + slideObjsTextDraw.items[i].positionL + "vw;top:" + slideObjsTextDraw.items[i].positionT +
@@ -435,8 +463,8 @@ function imgLoseFocus() {
 
             curObjT = (x[i].offsetTop / h) * 100;
             curObjL = (x[i].offsetLeft / w) * 100;
-            
-             if (x[i].style.width.slice(-2) == "vw") {
+
+            if (x[i].style.width.slice(-2) == "vw") {
                 curObjW = x[i].style.width.slice(0, 2);
                 curObjH = x[i].style.height.slice(0, 2);
             }
@@ -445,16 +473,16 @@ function imgLoseFocus() {
                 curObjH = ((x[i].style.height.slice(0, -2)) / h) * 100;
             }
             for (j = 0; j < slideObjs[curSlide].itemCount; j++) {
-               
+
                 if (x[i].id == "imgD_s" + slideObjs[curSlide].id + "_t" + slideObjs[curSlide].items[j].id && slideObjs[curSlide].items[j].type == "img") {
-                    
+
                     slideObjs[curSlide].items[j].widthO = curObjW;
                     slideObjs[curSlide].items[j].heightO = curObjH;
                     slideObjs[curSlide].items[j].positionL = curObjL;
                     slideObjs[curSlide].items[j].positionT = curObjT;
                 }
             }
-            
+
             x[i].classList.add("staticImg");
             x[i].classList.remove("editImg");
             x[i].onblur = imgLoseFocus;
