@@ -90,19 +90,65 @@
 {
     text-align: center;
 }
-#openImpress
+#newImpress
 {
     height: 8vh;
     width:8vh;
     position: absolute;
     left: 1vh;
     top:1vh;
+    text-align: center;
+}
+#openImpress
+{
+    height: 8vh;
+    width:8vh;
+    position: absolute;
+    left: 10vh;
+    top:1vh;
+    text-align: center;
 }
 #saveImpress
 {
     height: 8vh;
     width:8vh;
     position: absolute;
-    left: 9vh;
+    left:19vh;
     top:1vh;
+    text-align: center;
+}
+
+#changeBackColor
+{
+    height:8vh;
+    width:8vh;
+    position: absolute;
+    left:1vh;
+    top:1vh;
+    text-align: center;
+}
+
+#changeFontColor
+{
+    height:8vh;
+    width:8vh;
+    position: absolute;
+    left:1vh;
+    top:1vh;
+    text-align: center;
+}
+#slideTools
+{
+    height: 10vh;
+    border-left: 2px solid #666464;
+    position: absolute;
+    left:28vh;
+}
+
+#textTools
+{
+    height: 10vh;
+    border-left: 2px solid #666464;
+    position: absolute;
+    left:28vh;
 }

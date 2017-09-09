@@ -19,7 +19,7 @@
     <!-- CSS файлове -->
     <link rel="stylesheet" href="CSS/style.css">
     <link rel="stylesheet" href="CSS/UI.css">
-        <link rel="stylesheet" href="https://code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+    <link rel="stylesheet" href="https://code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
 
     <!-- JavaScript файлове -->
     <!--<script src="JS/jQueryCode.js"></script>-->
@@ -30,16 +30,23 @@
 
 <body id="mainBody" onload="startNew()">
     <div id="topBar">
+        <div id="fileTools">
+            <div id="newImpress" onmousedown="startNew()"><img src="Icons/fileIcon.png" width="75%" />Нов</div>
+            <div id="openImpress" onmousedown="openData()"><img src="Icons/IconOpen.png" width="75%" />Отвори</div>
+            <div id="saveImpress" onmousedown="saveData()"><img src="Icons/IconSave.png" width="75%" />Запази</div>
+        </div>
         <div id="slideTools">
-            <div id="openImpress" onmousedown="openData()"><img src="Icons/IconOpen.png" width="75%"/>Отвори</div>
-            <div id="saveImpress" onmousedown="saveData()"><img src="Icons/IconSave.png" width="75%"/>Запази</div>
+            <div id="changeBackColor" onmousedown="changeBGColor()"><img src="Icons/IconChangeBG.png" width="40%" /><br/>Цвят на фона</div>
+        </div>
+        <div id="textTools">
+            <div id="changeFontColor" onmousedown="changeFontColor()"><img src="Icons/IconFontColor.png" width="40%" /><br/>Цвят на текст</div>
         </div>
     </div>
     <div id="leftBar">
         <br/>
-        <div id="btnNewSlide" class="leftBarBtn" onmousedown="addNewSlide()"><img src="Icons/IconNewSlide.png" width="75%"/>Нов слайд</div> <br/>
-        <div id="btnAddTextField" class="leftBarBtn" onmousedown="addTextField()"><img src="Icons/IconTextBox.png" width="75%"/>Добави текстово поле</div> <br/>
-        <div id="btnAddImg" class="leftBarBtn" onmousedown="addImage()"><img src="Icons/IconImage.png" width="75%"/>Добави изображение </div> <br/>
+        <div id="btnNewSlide" class="leftBarBtn" onmousedown="addNewSlide()"><img src="Icons/IconNewSlide.png" width="75%" />Нов слайд</div> <br/>
+        <div id="btnAddTextField" class="leftBarBtn" onmousedown="addTextField()"><img src="Icons/IconTextBox.png" width="75%" />Добави текстово поле</div> <br/>
+        <div id="btnAddImg" class="leftBarBtn" onmousedown="addImage()"><img src="Icons/IconImage.png" width="75%" />Добави изображение </div> <br/>
 
     </div>
     <div id="rightBar">

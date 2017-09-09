@@ -5,6 +5,8 @@ var slideObjCount = 0;
 var slideObjs = [];
 var textObjs = [];
 
+var curClickedObj;
+
 //Променливи за откриване на viewport-width и viewport-height
 var w = Math.max(document.documentElement.clientWidth, window.innerWidth || 0);
 var h = Math.max(document.documentElement.clientHeight, window.innerHeight || 0);
@@ -27,11 +29,9 @@ function startNew() {
     slides = 1;
     slideObjs[slides] = new slide(1, "#3399ff", 0, 2, 1);
 
-    slides = 2;
-    slideObjs[slides] = new slide(slides, "#B60303", 0, 1, 0);
 
     slideObjCount++;
-    textObjs[slideObjCount] = new textObj(slideObjCount, "Hello world! This is a very long paragrah. This is used to test some things! ", 10, 5, 0, 3, 0, 0, 13, 15, "text");
+    textObjs[slideObjCount] = new textObj(slideObjCount, "Щракнете два пъти за да добавите текст", 10, 5, 0, 3, 0, 0, 13, 15, "text", "#B40000");
     slideObjs[1].items[0] = textObjs[slideObjCount];
 
 
@@ -73,20 +73,22 @@ function drawSlide(slideObjToDraw) {
     curSlideObj.style.backgroundColor = slideObjToDraw.backColor;
     curSlide = slideObjToDraw.id;
     document.getElementById("curSlideNum").innerText = curSlide; //Временен код, който показва номера на текущия слайд
-    
+
     if (slideObjs[curSlide].transition == 1) {
         $("#" + curSlideObj.id).hide();
         $("#" + curSlideObj.id).fadeIn();
     }
     else if (slideObjs[curSlide].transition == 2) {
         var x = curSlideObj.clientWidth;
+        x = (x / w) * 100;
         console.log(x);
         curSlideObj.style.width = "0px";
-        $("#" + curSlideObj.id).animate({width:x + "px"});
+        $("#" + curSlideObj.id).animate({ width: x + "vw" });
     }
     document.getElementById("curSlideNum").innerText = curSlide; //Временен код, който показва номера на текущия слайд
     drawText(slideObjToDraw);
     drawImg(slideObjToDraw);
+    $("#textTools").hide();
 
 }
 //Добавя нов слайд-обект към колекцията слайдове
@@ -116,14 +118,31 @@ function nukeSlides() {
     textObjs = [];
     document.getElementById("curSlide").innerHTML = "";
 }
+function changeBGColor() {
+    var colorObj = document.createElement("input");
+    colorObj.type = "color";
+    colorObj.id = "colorChoose";
+    colorObj.name = "clrC";
+    colorObj.value = slideObjs[curSlide].backColor;
+    colorObj.hidden = true;
 
+    document.getElementById("curSlide").appendChild(colorObj);
+    document.getElementById('colorChoose').click();
+
+    document.getElementById('colorChoose').onchange = function (evt) {
+        document.getElementById("curSlide").style.backgroundColor = colorObj.value;
+        slideObjs[curSlide].backColor = colorObj.value;
+    }
+    document.getElementById('colorChoose').remove();
+
+}
 //*----------------------------------------*
 //Функции на текстовото поле
 //*----------------------------------------*
 //Функция за добавяне на текстово поле от потребителя
 function addTextField() {
     slideObjCount++;
-    textObjs[slideObjCount] = new textObj(slideObjCount, "Click for text", 20, 15, 0, 3, 0, 0, 13, 15, "text");
+    textObjs[slideObjCount] = new textObj(slideObjCount, "Click for text", 20, 15, 0, 3, 0, 0, 13, 15, "text", "#000000");
     slideObjs[curSlide].items[slideObjs[curSlide].itemCount] = textObjs[slideObjCount];
     slideObjs[curSlide].itemCount++;
     drawSlide(slideObjs[curSlide]);
@@ -147,7 +166,7 @@ function drawText(slideObjsTextDraw) {
                 "vw;right:" + slideObjsTextDraw.items[i].positionR +
                 "vw;bottom:" + slideObjsTextDraw.items[i].positionB + "vw;" +
                 "width:" + slideObjsTextDraw.items[i].widthO + "vw;" + "height:" + slideObjsTextDraw.items[i].heightO + "vh;" +
-                "word-wrap: break-word;";
+                "word-wrap: break-word;" + "color:" + slideObjsTextDraw.items[i].fontColor;
             //"max-width:" + slideObjsTextDraw.items[i].widthO + "vw;" +
             textDiv.innerHTML = slideObjsTextDraw.items[i].textC;
 
@@ -164,6 +183,9 @@ function drawText(slideObjsTextDraw) {
 //Функция за трансформиране на текстово поле в поле за редакция на текст
 function textBoxClicked(textBoxObj) {
     if (textBoxObj.target.classList.contains("textInputWrapper") == false && textBoxObj.target.classList.contains("staticText") == true) {
+
+        $("#slideTools").fadeOut();
+        $("#textTools").fadeIn();
 
         //Създава input полето, което се използва за въвеждане на текст
         var editTextPrototype = document.createElement("textarea");
@@ -191,12 +213,12 @@ function textBoxClicked(textBoxObj) {
 
         textBoxObj.target.appendChild(editTextPrototype);
         textOn = false;
+
+        curClickedObj = textBoxObj.target.id;
         //textBoxObj.target.children[0].select();
     }
 
 }
-
-
 
 //Функция за трансформиране на поле за редакция на текст в обикновенно текстово поле
 function textBoxLoseFocus(clickedObj) {
@@ -244,76 +266,38 @@ function textBoxLoseFocus(clickedObj) {
 
             x[i].innerText = curObjText;
 
-            //x[i].onmousedown = textBoxClicked;
-            //x[i].onblur = textBoxLoseFocus;
-            //x[i].tabIndex = 1;
+            $("#slideTools").fadeIn();
+            $("#textTools").fadeOut();
 
-
-            // textDiv.onmousedown = textBoxClicked;
-            //textDiv.onblur = textBoxLoseFocus;
-            //-------------------//
-            //LEGACY CODE
-
-            /*var findTextInput = x[i].children[0];
-            
-            for (j = 0; j<slideObjs[curSlide].itemCount;j++)
-            {
-                if(x[i].id == "text_s" +slideObjs[curSlide].id + "_t" + slideObjs[curSlide].items[j].id)
-                {
-                    console.log(x[i].offsetTop/h);
-
-                    slideObjs[curSlide].items[j].widthO = (x[i].children[0].style.width/w)*100;
-                    slideObjs[curSlide].items[j].heightO = (x[i].children[0].style.height/w)*100;
-                    slideObjs[curSlide].items[j].positionL =  (x[i].offsetLeft/w)*100;
-                    slideObjs[curSlide].items[j].positionT =  (x[i].offsetTop/w)*100;
-                    
-                }
-            }
-            
-            x[i].innerText = findTextInput.value;
-            
-            // x[i].style = "color:white;"+
-            // "width:" + (findTextInput.style.width)+
-            // "height:"+(findTextInput.style.height);
-
-            x[i].style.width = findTextInput.style.width;
-            //x[i].style.height = (findTextInput.style.height/w)*100 + "vw;";
-            
-            //Тестов код
-            var a = findTextInput.style.width;
-            console.log(a);
-
-            x[i].classList.remove("textInputWrapper");
-            x[i].classList.remove("editText");
-            x[i].classList.add("staticText");
-
-            //Не винаги съществува текстовото поле, при което кода дава грешка
-            try 
-            {
-                x[i].removeChild(findTextInput);
-            }
-            catch(err) 
-            {
-                //Да се оправи тоя код
-                console.log("Грешка при Try Catch на x[i].removeChild()");
-            }
-            */
-            //------------------------//
-
-
-
-            //Какво трябва да прави тази функция ?
-
-            //1. Да запазва, записва и прехвърля стойностите от текстовото поле - текст, позиция и размер
-            //2. Да премахвам текстовото поле и съотвените класове
-            //3. Да връща класовете от текстовия стикер (явно така ще се нарича нередактируемото текстово поле)
-
-
+            curClickedObj = "";
         }
     }
 }
 
+function changeFontColor() {
+    var colorObj = document.createElement("input");
+    colorObj.type = "color";
+    colorObj.id = "colorChooseFont";
+    colorObj.name = "clrCF";
+    colorObj.value = slideObjs[curSlide].backColor;
+    colorObj.hidden = true;
 
+    document.getElementById("curSlide").appendChild(colorObj);
+    document.getElementById('colorChooseFont').click();
+
+    document.getElementById('colorChooseFont').onchange = function (evt) {
+        document.getElementById(curClickedObj).style.color = colorObj.value;
+        
+        //slideObjs[curSlide].backColor = colorObj.value;
+        for (j = 0; j < slideObjs[curSlide].itemCount; j++) {
+            if (x[i].id == "text_s" + slideObjs[curSlide].id + "_t" + slideObjs[curSlide].items[j].id && slideObjs[curSlide].items[j].type == "text") {
+                slideObjs[curSlide].items[j].fontColor = colorObj.value;
+            }
+        }
+    }
+    document.getElementById('colorChooseFont').remove();
+
+}
 
 function resizeableBox() {
     alert("1");
@@ -448,7 +432,6 @@ function imgClicked(imgObjClick) {
     imgObjClick.target.parentNode.onblur = imgLoseFocus;
     imgObjClick.target.parentNode.tabIndex = 1;
 }
-
 
 function imgLoseFocus() {
 

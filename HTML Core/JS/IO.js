@@ -47,6 +47,9 @@ function saveData(slidesObjs) {
                 dataToSend[curLines] = slideObjs[i].items[j].positionL;
                 curLines++;
 
+                dataToSend[curLines] = slideObjs[i].items[j].fontColor;
+                curLines++;
+
                 dataToSend[curLines] = slideObjs[i].items[j].fontFamily;
                 curLines++;
 
@@ -143,8 +146,9 @@ function openData() {
 
                     if (resultsArray[i].slice(0, -1).localeCompare("//Text object") == 0) {
                         slideObjCount++;
-                        textObjs[slideObjCount] = new textObj(Number(resultsArray[i + 1]), resultsArray[i + 2].slice(0, -1),Number(resultsArray[i + 3]), Number(resultsArray[i + 4]), Number(resultsArray[i + 5]),
-                        Number(resultsArray[i + 6]), Number(resultsArray[i + 7]), Number(resultsArray[i + 8]), Number(resultsArray[i + 9]), Number(resultsArray[i + 10]), resultsArray[i + 11].slice(0, -1));
+                        textObjs[slideObjCount] = new textObj(Number(resultsArray[i + 1]), resultsArray[i + 2].slice(0, -1),Number(resultsArray[i + 3]), Number(resultsArray[i + 4]), Number(resultsArray[i + 6]),
+                        Number(resultsArray[i + 7]), Number(resultsArray[i + 8]), Number(resultsArray[i + 9]), Number(resultsArray[i + 10]),
+                        Number(resultsArray[i + 11]), resultsArray[i + 12].slice(0, -1),resultsArray[i + 5].slice(0, -1),);
                         slideObjs[slideCounts].items[slideItemCounts] = textObjs[slideObjCount];
 
                         slideItemCounts++;
