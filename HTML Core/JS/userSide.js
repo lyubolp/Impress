@@ -6,6 +6,8 @@ var slideObjs = [];
 var textObjs = [];
 
 var curClickedObj;
+var installedFonts = [];
+var installedFontsCount = 0;
 
 //Променливи за откриване на viewport-width и viewport-height
 var w = Math.max(document.documentElement.clientWidth, window.innerWidth || 0);
@@ -31,7 +33,7 @@ function startNew() {
 
 
     slideObjCount++;
-    textObjs[slideObjCount] = new textObj(slideObjCount, "Щракнете два пъти за да добавите текст", 10, 5, 0, 3, 0, 0, 13, 15, "text", "#B40000");
+    textObjs[slideObjCount] = new textObj(slideObjCount, "Щракнете два пъти за да добавите текст", 10, 5, "Consolas", 3, 0, 0, 13, 15, "text", "#B40000");
     slideObjs[1].items[0] = textObjs[slideObjCount];
 
 
@@ -43,6 +45,7 @@ function startNew() {
 
     //addNewSlide();
     drawSlide(slideObjs[1]);
+    loadFonts();
 }
 function initSlide(idS) {
 
@@ -142,7 +145,7 @@ function changeBGColor() {
 //Функция за добавяне на текстово поле от потребителя
 function addTextField() {
     slideObjCount++;
-    textObjs[slideObjCount] = new textObj(slideObjCount, "Click for text", 20, 15, 0, 3, 0, 0, 13, 15, "text", "#000000");
+    textObjs[slideObjCount] = new textObj(slideObjCount, "Click for text", 20, 15, "Segoe UI", 3, 0, 0, 13, 15, "text", "#000000");
     slideObjs[curSlide].items[slideObjs[curSlide].itemCount] = textObjs[slideObjCount];
     slideObjs[curSlide].itemCount++;
     drawSlide(slideObjs[curSlide]);
@@ -164,7 +167,7 @@ function drawText(slideObjsTextDraw) {
             textDiv.style.fontSize = slideObjsTextDraw.items[i].fontSize + "vw";
             textDiv.style = "position:absolute;left:" + slideObjsTextDraw.items[i].positionL + "vw;top:" + slideObjsTextDraw.items[i].positionT +
                 "vw;right:" + slideObjsTextDraw.items[i].positionR +
-                "vw;bottom:" + slideObjsTextDraw.items[i].positionB + "vw;" +
+                "vw;bottom:" + slideObjsTextDraw.items[i].positionB + "vw;" + "font-family:" + slideObjsTextDraw.items[i].fontFamily + ";"+ 
                 "width:" + slideObjsTextDraw.items[i].widthO + "vw;" + "height:" + slideObjsTextDraw.items[i].heightO + "vh;" +
                 "word-wrap: break-word;" + "color:" + slideObjsTextDraw.items[i].fontColor;
             //"max-width:" + slideObjsTextDraw.items[i].widthO + "vw;" +
@@ -216,6 +219,13 @@ function textBoxClicked(textBoxObj) {
 
         curClickedObj = textBoxObj.target.id;
         //textBoxObj.target.children[0].select();
+
+        var selectObjL = document.getElementById("selectFont");
+        
+        for(i = 0; i< selectObjL.options.length; i++)
+            {
+                
+            }
     }
 
 }

@@ -152,3 +152,18 @@
     position: absolute;
     left:28vh;
 }
+#changeFont
+{
+    position: absolute;
+    left:10vh;
+    top:1vh;
+    text-align: center;
+    height: 8vh;
+    width:35vh;
+}
+#selectFont
+{
+    width: 35vh;
+
+    font-size:1.1vw;
+}

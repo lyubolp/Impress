@@ -11,6 +11,7 @@ using CefSharp;
 using CefSharp.WinForms;
 using System.IO;
 using System.Threading;
+using System.Drawing.Text;
 
 namespace Impress
 {
@@ -60,16 +61,24 @@ namespace Impress
                 }
 
                 MessageBox.Show("File saved");
-
-
-
-
-
             }
 
         }
 
+        void getFonts()
+        {
+            using (InstalledFontCollection fontsCollection = new InstalledFontCollection())
+            {
+                StreamWriter fontListCreator = new StreamWriter(System.IO.Directory.GetCurrentDirectory() + "/fontsList.txt");
+                FontFamily[] fontFamilies = fontsCollection.Families;
 
+                fontListCreator.AutoFlush = true;
+                foreach (FontFamily font in fontFamilies)
+                {
+                    fontListCreator.WriteLine(font.Name);    
+                }
+            }
+        }
 
         public Form1()
         {
@@ -82,7 +91,7 @@ namespace Impress
 
         private void Form1_Load(object sender, EventArgs e)
         {
-            
+            getFonts();
         }
         protected override bool ProcessCmdKey(ref Message msg, Keys keyData)
         {
