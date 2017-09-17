@@ -191,7 +191,6 @@ function openData() {
 
 function loadFonts() {
     var filePath = window.location.href.slice(0, -10) + "fontsList.txt";
-    console.log(filePath);
     var rawFile = new XMLHttpRequest();
     rawFile.open("GET", filePath, false);
     rawFile.onreadystatechange = function () {
@@ -205,8 +204,8 @@ function loadFonts() {
         }
     }
     rawFile.send(null);
-    console.log(installedFonts);
     var fontsListObj = document.getElementById("selectFont");
+    fontsListObj.onchange = changeFont;
 
     for (i = 0; i < installedFontsCount; i++) {
         

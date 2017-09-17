@@ -167,7 +167,7 @@ function drawText(slideObjsTextDraw) {
             textDiv.style.fontSize = slideObjsTextDraw.items[i].fontSize + "vw";
             textDiv.style = "position:absolute;left:" + slideObjsTextDraw.items[i].positionL + "vw;top:" + slideObjsTextDraw.items[i].positionT +
                 "vw;right:" + slideObjsTextDraw.items[i].positionR +
-                "vw;bottom:" + slideObjsTextDraw.items[i].positionB + "vw;" + "font-family:" + slideObjsTextDraw.items[i].fontFamily + ";"+ 
+                "vw;bottom:" + slideObjsTextDraw.items[i].positionB + "vw;" + "font-family:" + slideObjsTextDraw.items[i].fontFamily + ";" +
                 "width:" + slideObjsTextDraw.items[i].widthO + "vw;" + "height:" + slideObjsTextDraw.items[i].heightO + "vh;" +
                 "word-wrap: break-word;" + "color:" + slideObjsTextDraw.items[i].fontColor;
             //"max-width:" + slideObjsTextDraw.items[i].widthO + "vw;" +
@@ -200,7 +200,7 @@ function textBoxClicked(textBoxObj) {
 
 
         editTextPrototype.style = "width:" + textBoxObj.target.style.width + "; height:" + textBoxObj.target.style.height + ";" +
-            "margin:0px;";
+            "margin:0px;" + "font-family:" + textBoxObj.target.style.fontFamily + ";";
 
         //С textBoxObj.target се достига до текущия натиснат обект
 
@@ -221,11 +221,12 @@ function textBoxClicked(textBoxObj) {
         //textBoxObj.target.children[0].select();
 
         var selectObjL = document.getElementById("selectFont");
-        
-        for(i = 0; i< selectObjL.options.length; i++)
-            {
-                
+
+        for (i = 0; i < selectObjL.options.length; i++) {
+            if (selectObjL.options[i].value.toString().slice(0, -1) == textBoxObj.target.style.fontFamily) {
+                selectObjL.options[i].selected = true;
             }
+        }
     }
 
 }
@@ -297,7 +298,7 @@ function changeFontColor() {
 
     document.getElementById('colorChooseFont').onchange = function (evt) {
         document.getElementById(curClickedObj).style.color = colorObj.value;
-        
+
         //slideObjs[curSlide].backColor = colorObj.value;
         for (j = 0; j < slideObjs[curSlide].itemCount; j++) {
             if (x[i].id == "text_s" + slideObjs[curSlide].id + "_t" + slideObjs[curSlide].items[j].id && slideObjs[curSlide].items[j].type == "text") {
@@ -307,6 +308,20 @@ function changeFontColor() {
     }
     document.getElementById('colorChooseFont').remove();
 
+}
+
+function changeFont() {
+    var selectObjL = document.getElementById("selectFont");
+    document.getElementById(curClickedObj).style.fontFamily = selectObjL.value;
+    document.getElementById(curClickedObj).children[0].style.fontFamily = selectObjL.value;
+
+
+    //slideObjs[curSlide].backColor = colorObj.value;
+    for (j = 0; j < slideObjs[curSlide].itemCount; j++) {
+        if (x[i].id == "text_s" + slideObjs[curSlide].id + "_t" + slideObjs[curSlide].items[j].id && slideObjs[curSlide].items[j].type == "text") {
+            slideObjs[curSlide].items[j].fontColor = colorObj.value;
+        }
+    }
 }
 
 function resizeableBox() {
