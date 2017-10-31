@@ -1,13 +1,21 @@
-var slides = 0;
-var curSlide;
-var slideObjCount = 0;
+/*
+userSlide.js
 
-var slideObjs = [];
-var textObjs = [];
+Това е файл, съдържащ главните функции по обектите в слайдовете.
+Написан от: Любослав Карев
+*/
 
-var curClickedObj;
-var installedFonts = [];
-var installedFontsCount = 0;
+//Променливи
+var slides = 0; //Брой слайдове
+var curSlide; //Номер на текущ слайд
+var slideObjCount = 0; //Брой на обекти в текущия слайд
+
+var slideObjs = []; //Обект, съдържащ слайдовете
+var textObjs = []; //Обект съдържащ текстовите полета
+
+var curClickedObj; //Текущия натиснат обект
+var installedFonts = []; //Списъл с инсталираните шрифтове
+var installedFontsCount = 0; //Броя на инсталираните шрифтове
 
 //Променливи за откриване на viewport-width и viewport-height
 var w = Math.max(document.documentElement.clientWidth, window.innerWidth || 0);
@@ -77,6 +85,7 @@ function drawSlide(slideObjToDraw) {
     curSlide = slideObjToDraw.id;
     document.getElementById("curSlideNum").innerText = curSlide; //Временен код, който показва номера на текущия слайд
 
+    //Код за анимациите на преминаване между слайдовете
     if (slideObjs[curSlide].transition == 1) {
         $("#" + curSlideObj.id).hide();
         $("#" + curSlideObj.id).fadeIn();
@@ -84,34 +93,39 @@ function drawSlide(slideObjToDraw) {
     else if (slideObjs[curSlide].transition == 2) {
         var x = curSlideObj.clientWidth;
         x = (x / w) * 100;
-        console.log(x);
         curSlideObj.style.width = "0px";
         $("#" + curSlideObj.id).animate({ width: x + "vw" });
     }
+
     document.getElementById("curSlideNum").innerText = curSlide; //Временен код, който показва номера на текущия слайд
     drawText(slideObjToDraw);
     drawImg(slideObjToDraw);
-    $("#textTools").hide();
 
+    //Код за скриване на специализираните менюта за обекти
+    $("#textTools").hide();
+    $("#imgTools").hide();
 }
 //Добавя нов слайд-обект към колекцията слайдове
 function addNewSlide() {
     slides++;
     slideObjs[slides] = new slide(slides, "#ffffff", 0, 0, 0);
     drawSlide(slideObjs[slides]);
-
 }
 
+//Функция за фокусиране върху слайд, чрез премахване на фокуса от другите обекти
 function focusOnSlide() {
     textBoxLoseFocus();
 }
 
+//Функция за преизчертаване на слайд
 function redrawSlide() {
     //Тестова функция
     document.getElementById("curSlide").innerHTML = "";
 
     drawSlide(slideObjs[curSlide]);
 }
+
+//Функция за унищожаване на текуща презентация и всичко обекти свързани с нея
 function nukeSlides() {
     slides = 0;
     curSlide = 0;
@@ -121,6 +135,8 @@ function nukeSlides() {
     textObjs = [];
     document.getElementById("curSlide").innerHTML = "";
 }
+
+//Функция за промяна фоновия цвят на слайд
 function changeBGColor() {
     var colorObj = document.createElement("input");
     colorObj.type = "color";
@@ -162,8 +178,6 @@ function drawText(slideObjsTextDraw) {
             textDiv.id = "text_s" + slideObjsTextDraw.id + "_t" + slideObjsTextDraw.items[i].id;
             textDiv.classList.add("staticText");
 
-
-
             textDiv.style.fontSize = slideObjsTextDraw.items[i].fontSize + "vw";
             textDiv.style = "position:absolute;left:" + slideObjsTextDraw.items[i].positionL + "vw;top:" + slideObjsTextDraw.items[i].positionT +
                 "vw;right:" + slideObjsTextDraw.items[i].positionR +
@@ -189,7 +203,7 @@ function textBoxClicked(textBoxObj) {
 
         $("#slideTools").fadeOut();
         $("#textTools").fadeIn();
-
+        $("#imgTools").fadeOut();
         //Създава input полето, което се използва за въвеждане на текст
         var editTextPrototype = document.createElement("textarea");
 
@@ -279,7 +293,7 @@ function textBoxLoseFocus(clickedObj) {
 
             $("#slideTools").fadeIn();
             $("#textTools").fadeOut();
-
+            $("#imgTools").fadeOut();
             curClickedObj = "";
         }
     }
@@ -312,9 +326,10 @@ function changeFontColor() {
 
 function changeFont() {
     var selectObjL = document.getElementById("selectFont");
+    var x = document.getElementById("curSlide").children;
+
     document.getElementById(curClickedObj).style.fontFamily = selectObjL.value;
     document.getElementById(curClickedObj).children[0].style.fontFamily = selectObjL.value;
-
 
     //slideObjs[curSlide].backColor = colorObj.value;
     for (j = 0; j < slideObjs[curSlide].itemCount; j++) {
@@ -328,6 +343,20 @@ function resizeableBox() {
     alert("1");
 }
 
+//Функция за премахване на текстов обект
+function removeText() {
+    var x = document.getElementById("curSlide").children; //Текущите обекти в слайда, x[i] е обект
+    //Функцията ще претърси всичките обекти и ще открие записа в БД, съответсващ на обекта
+    for (i = 0; i < slideObjs[curSlide].itemCount; i++) {
+        if (curClickedObj == "text_s" + slideObjs[curSlide].id + "_t" + slideObjs[curSlide].items[i].id) {
+            //При откриване на съвпадение, премахва HTML обекта заедно с елемента от масива, отговарящ на този обект и прекъсва цикъла
+            document.getElementById("text_s" + slideObjs[curSlide].id + "_t" + slideObjs[curSlide].items[i].id).remove();
+            slideObjs[curSlide].items.splice(i, 1);
+            break;
+        }
+    }
+    slideObjs[curSlide].itemCount--; //Намалява броя на елементите в слайда
+}
 
 //*----------------------------------------*
 //Функции на изображение
@@ -456,6 +485,12 @@ function imgClicked(imgObjClick) {
 
     imgObjClick.target.parentNode.onblur = imgLoseFocus;
     imgObjClick.target.parentNode.tabIndex = 1;
+
+    curClickedObj = imgObjClick.target.parentNode.id;
+    
+    $("#slideTools").fadeOut();
+    $("#textTools").fadeOut();
+    $("#imgTools").fadeIn();
 }
 
 function imgLoseFocus() {
@@ -499,5 +534,24 @@ function imgLoseFocus() {
         }
 
     }
+}
+
+//Функция за премахване на обект изображение
+function removeImg() {
+    
+    var x = document.getElementById("curSlide").children; //Текущите обекти в слайда, x[i] е обект
+    //Функцията ще претърси всичките обекти и ще открие записа в БД, съответсващ на обекта
+    console.log(x[3]);
+    for (i = 0; i < slideObjs[curSlide].itemCount; i++) {
+        console.log(slideObjs[curSlide].items[i].id);
+        if (curClickedObj == "imgD_s" + slideObjs[curSlide].id + "_t" + slideObjs[curSlide].items[i].id) {
+            console.log(i);
+            //При откриване на съвпадение, премахва HTML обекта заедно с елемента от масива, отговарящ на този обект и прекъсва цикъла
+            document.getElementById("img_s" + slideObjs[curSlide].id + "_t" + slideObjs[curSlide].items[i].id).remove();
+            slideObjs[curSlide].items.splice(i, 1);
+            break;
+        }
+    }
+    slideObjs[curSlide].itemCount--; //Намалява броя на елементите в слайда
 }
 

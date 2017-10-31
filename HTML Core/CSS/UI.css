@@ -164,6 +164,31 @@
 #selectFont
 {
     width: 35vh;
-
     font-size:1.1vw;
+}
+
+#removeText
+{
+    height:8vh;
+    width:8vh;
+    position: absolute;
+    left:46vh;
+    top:1vh;
+    text-align: center;
+}
+#imgTools
+{
+    height: 10vh;
+    border-left: 2px solid #666464;
+    position: absolute;
+    left:28vh;
+}
+#removeImg
+{
+    height:8vh;
+    width:8vh;
+    position: absolute;
+    left:1vh;
+    top:1vh;
+    text-align: center;
 }
