@@ -96,6 +96,9 @@ function saveData(slidesObjs) {
                 dataToSend[curLines] = slideObjs[i].items[j].heightO;
                 curLines++;
 
+                dataToSend[curLines] = slideObjs[i].items[j].captionO;
+                curLines++;
+
                 dataToSend[curLines] = slideObjs[i].items[j].type;
                 curLines++;
             }
@@ -164,7 +167,7 @@ function openData() {
 
                         var imgObjS = new imgObj(Number(resultsArray[i + 1]),
                             resultsArray[i + 2].slice(0, -1), Number(resultsArray[i + 3].slice(0, -1)), Number(resultsArray[i + 4].slice(0, -1)), Number(resultsArray[i + 5].slice(0, -1)),
-                            Number(resultsArray[i + 6].slice(0, -1)), Number(resultsArray[i + 7].slice(0, -1)), resultsArray[i + 8].slice(0, -1));
+                            Number(resultsArray[i + 6].slice(0, -1)), Number(resultsArray[i + 7].slice(0, -1)),resultsArray[i + 8].slice(0, -1), resultsArray[i + 9].slice(0, -1));
 
                         slideObjs[slideCounts].items[slideObjs[slideCounts].itemCount - 1] = imgObjS;
 

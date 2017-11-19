@@ -541,11 +541,8 @@ function removeImg() {
     
     var x = document.getElementById("curSlide").children; //Текущите обекти в слайда, x[i] е обект
     //Функцията ще претърси всичките обекти и ще открие записа в БД, съответсващ на обекта
-    console.log(x[3]);
     for (i = 0; i < slideObjs[curSlide].itemCount; i++) {
-        console.log(slideObjs[curSlide].items[i].id);
         if (curClickedObj == "imgD_s" + slideObjs[curSlide].id + "_t" + slideObjs[curSlide].items[i].id) {
-            console.log(i);
             //При откриване на съвпадение, премахва HTML обекта заедно с елемента от масива, отговарящ на този обект и прекъсва цикъла
             document.getElementById("img_s" + slideObjs[curSlide].id + "_t" + slideObjs[curSlide].items[i].id).remove();
             slideObjs[curSlide].items.splice(i, 1);
@@ -555,3 +552,8 @@ function removeImg() {
     slideObjs[curSlide].itemCount--; //Намалява броя на елементите в слайда
 }
 
+//Функция за добавяне заглавие под картинка
+function imgAddCaption()
+{
+    
+}

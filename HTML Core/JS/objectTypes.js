@@ -30,7 +30,7 @@ function textObj(idObj,textContent,positionTV,positionLV,fontFamilyV,fontSizeV,f
 }
 
 
-function imgObj(idObj, imgUrlV, positionTV, positionLV, effectV, widthV, heightV )
+function imgObj(idObj, imgUrlV, positionTV, positionLV, effectV, widthV, heightV, captionV )
 {
     this.id = idObj;
     this.imgUrl = imgUrlV;
@@ -39,6 +39,7 @@ function imgObj(idObj, imgUrlV, positionTV, positionLV, effectV, widthV, heightV
     this.effect = effectV;
     this.widthO = widthV;
     this.heightO = heightV;
+    this.caption = captionV;
     this.type = "img";
 }
 //
