@@ -37,8 +37,6 @@ namespace Impress
 
             public void saveImpress(object[] saveData)
             {
-
-
                 SaveFileDialog saveFileDia = new SaveFileDialog();
                 saveFileDia.Filter = "Impress presentation files|*.imf";
                 
@@ -63,6 +61,26 @@ namespace Impress
                 MessageBox.Show("File saved");
             }
 
+            public string colorDialogFun()
+            {
+                //This code shows a colorDialog from the WinForms API
+                //The result is in ARGB, so we covnert it to #RRGGBB format, usable in HTML
+                //Then we return the string
+                string hexResult;
+                ColorDialog slideColorDiagObj = new ColorDialog()
+                {
+                    AllowFullOpen = true,
+                    AnyColor = false,
+                    FullOpen = true
+                };
+
+                if (slideColorDiagObj.ShowDialog() == DialogResult.OK)
+                {
+                    hexResult = "#" + slideColorDiagObj.Color.R.ToString("X2") + slideColorDiagObj.Color.G.ToString("X2") + slideColorDiagObj.Color.B.ToString("X2");
+                    return hexResult;
+                }
+                return "Nope";
+            }
         }
 
         void getFonts()
@@ -75,7 +93,7 @@ namespace Impress
                 fontListCreator.AutoFlush = true;
                 foreach (FontFamily font in fontFamilies)
                 {
-                    fontListCreator.WriteLine(font.Name);    
+                    fontListCreator.WriteLine(font.Name);
                 }
             }
         }
@@ -87,6 +105,7 @@ namespace Impress
             InitializeChromium();
 
             chromeBrowser.RegisterJsObject("cefCustomObject", new BridgeClass(chromeBrowser, this));
+            
         }
 
         private void Form1_Load(object sender, EventArgs e)
@@ -133,6 +152,9 @@ namespace Impress
             BrowserSettings browserSettings = new BrowserSettings();
             browserSettings.FileAccessFromFileUrls = CefState.Enabled;
             browserSettings.UniversalAccessFromFileUrls = CefState.Enabled;
+            browserSettings.Javascript = CefState.Enabled;
+            browserSettings.LocalStorage = CefState.Enabled;
+            
             chromeBrowser.BrowserSettings = browserSettings;
 
         }
@@ -143,13 +165,18 @@ namespace Impress
         }
 
         private void btnRefresh_Click(object sender, EventArgs e)
-        {
-            chromeBrowser.Refresh();
+        {   
+            chromeBrowser.Reload();
         }
 
         private void btnDevTools_Click(object sender, EventArgs e)
         {
             chromeBrowser.ShowDevTools();
+        }
+
+        private void btnGoUrl_Click(object sender, EventArgs e)
+        {
+            chromeBrowser.Load(urlBar.Text);
         }
     }
 }

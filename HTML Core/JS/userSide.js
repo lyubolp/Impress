@@ -41,7 +41,7 @@ function startNew() {
 
 
     slideObjCount++;
-    textObjs[slideObjCount] = new textObj(slideObjCount, "Щракнете два пъти за да добавите текст", 10, 5, "Consolas", 3, 0, 0, 13, 15, "text", "#B40000");
+    textObjs[slideObjCount] = new textObj(slideObjCount, "Щракнете два пъти за да добавите текст", 10, 5, "Consolas", 1, 0, 0, 13, 15, "text", "#B40000", "none");
     slideObjs[1].items[0] = textObjs[slideObjCount];
 
 
@@ -53,7 +53,9 @@ function startNew() {
 
     //addNewSlide();
     drawSlide(slideObjs[1]);
-    loadFonts();
+    //loadFonts();
+
+
 }
 function initSlide(idS) {
 
@@ -138,21 +140,13 @@ function nukeSlides() {
 
 //Функция за промяна фоновия цвят на слайд
 function changeBGColor() {
-    var colorObj = document.createElement("input");
-    colorObj.type = "color";
-    colorObj.id = "colorChoose";
-    colorObj.name = "clrC";
-    colorObj.value = slideObjs[curSlide].backColor;
-    colorObj.hidden = true;
 
-    document.getElementById("curSlide").appendChild(colorObj);
-    document.getElementById('colorChoose').click();
+    //Извиква colorDialog от приложението, което връща избрания цвят в hex формат
 
-    document.getElementById('colorChoose').onchange = function (evt) {
-        document.getElementById("curSlide").style.backgroundColor = colorObj.value;
-        slideObjs[curSlide].backColor = colorObj.value;
-    }
-    document.getElementById('colorChoose').remove();
+    var colorString = cefCustomObject.colorDialogFun();
+
+    document.getElementById("curSlide").style.backgroundColor = colorString;
+    slideObjs[curSlide].backColor = colorString;
 
 }
 //*----------------------------------------*
@@ -161,7 +155,7 @@ function changeBGColor() {
 //Функция за добавяне на текстово поле от потребителя
 function addTextField() {
     slideObjCount++;
-    textObjs[slideObjCount] = new textObj(slideObjCount, "Click for text", 20, 15, "Segoe UI", 3, 0, 0, 13, 15, "text", "#000000");
+    textObjs[slideObjCount] = new textObj(slideObjCount, "Click for text", 20, 15, "Segoe UI", 1, 0, 0, 13, 15, "text", "#000000", "none");
     slideObjs[curSlide].items[slideObjs[curSlide].itemCount] = textObjs[slideObjCount];
     slideObjs[curSlide].itemCount++;
     drawSlide(slideObjs[curSlide]);
@@ -170,7 +164,6 @@ function addTextField() {
 function drawText(slideObjsTextDraw) {
     var curSlideObj = document.getElementById("curSlide");
 
-
     for (i = 0; i < slideObjsTextDraw.itemCount; i++) {
         if (slideObjsTextDraw.items[i].type == "text") {
             var textDiv = document.createElement("div");
@@ -178,12 +171,17 @@ function drawText(slideObjsTextDraw) {
             textDiv.id = "text_s" + slideObjsTextDraw.id + "_t" + slideObjsTextDraw.items[i].id;
             textDiv.classList.add("staticText");
 
-            textDiv.style.fontSize = slideObjsTextDraw.items[i].fontSize + "vw";
             textDiv.style = "position:absolute;left:" + slideObjsTextDraw.items[i].positionL + "vw;top:" + slideObjsTextDraw.items[i].positionT +
                 "vw;right:" + slideObjsTextDraw.items[i].positionR +
                 "vw;bottom:" + slideObjsTextDraw.items[i].positionB + "vw;" + "font-family:" + slideObjsTextDraw.items[i].fontFamily + ";" +
                 "width:" + slideObjsTextDraw.items[i].widthO + "vw;" + "height:" + slideObjsTextDraw.items[i].heightO + "vh;" +
                 "word-wrap: break-word;" + "color:" + slideObjsTextDraw.items[i].fontColor;
+
+            if (slideObjsTextDraw.items[i].backColor != "none") {
+                textDiv.style.backgroundColor = slideObjsTextDraw.items[i].backColor;
+            }
+            textDiv.style.fontSize = slideObjsTextDraw.items[i].fontSize + "vw";
+            
             //"max-width:" + slideObjsTextDraw.items[i].widthO + "vw;" +
             textDiv.innerHTML = slideObjsTextDraw.items[i].textC;
 
@@ -194,7 +192,36 @@ function drawText(slideObjsTextDraw) {
             curSlideObj.appendChild(textDiv);
         }
     }
+}
 
+//Функция за чертане на caption върху слайд
+function drawCaptionOnSlide(captionObjsTextDraw) {
+    var curSlideObj = document.getElementById("curSlide");
+    if (captionObjsTextDraw.type == "text") {
+        var textDiv = document.createElement("div");
+
+        textDiv.id = "text_s" + captionObjsTextDraw.id + "_t" + captionObjsTextDraw.id;
+        textDiv.classList.add("staticText");
+
+        textDiv.style = "position:absolute;left:" + captionObjsTextDraw.positionL + "vw;top:" + captionObjsTextDraw.positionT +
+            "vw;right:" + captionObjsTextDraw.positionR +
+            "vw;bottom:" + captionObjsTextDraw.positionB + "vw;" + "font-family:" + captionObjsTextDraw.fontFamily + ";" +
+            "width:" + captionObjsTextDraw.widthO + "vw;" + "height:" + captionObjsTextDraw.heightO + "vh;" +
+            "word-wrap: break-word;" + "color:" + captionObjsTextDraw.fontColor;
+
+        if (captionObjsTextDraw.backColor != "none") {
+            textDiv.style.backgroundColor = captionObjsTextDraw.backColor;
+        }
+        textDiv.style.fontSize = captionObjsTextDraw.fontSize + "vw";
+        //"max-width:" + captionObjsTextDraw.items[i].widthO + "vw;" +
+        textDiv.innerHTML = captionObjsTextDraw.textC;
+
+        textDiv.onmousedown = textBoxClicked;
+        //textDiv.onblur = textBoxLoseFocus;
+        //textDiv.tabIndex = 1;
+
+        curSlideObj.appendChild(textDiv);
+    }
 }
 
 //Функция за трансформиране на текстово поле в поле за редакция на текст
@@ -307,10 +334,13 @@ function changeFontColor() {
     colorObj.value = slideObjs[curSlide].backColor;
     colorObj.hidden = true;
 
+
     document.getElementById("curSlide").appendChild(colorObj);
     document.getElementById('colorChooseFont').click();
 
+
     document.getElementById('colorChooseFont').onchange = function (evt) {
+
         document.getElementById(curClickedObj).style.color = colorObj.value;
 
         //slideObjs[curSlide].backColor = colorObj.value;
@@ -374,7 +404,6 @@ function addImage() {
     document.getElementById("tempInput").click();
 
     slideObjs[curSlide].itemCount++;
-    console.log(slideObjs[curSlide].itemCount);
     var imgHolder = document.createElement("img");
     imgHolder.id = "img_s" + slideObjs[curSlide].id + "_t" + slideObjs[curSlide].itemCount;
     imgHolder.classList.add("imgContained");
@@ -407,7 +436,6 @@ function addImage() {
 
 
                 imgDivContainer.style.height = "400px";
-                console.log(imgHolder.clientHeight);
                 //CHANGED HERE
 
                 //imgHolder.classList.add("staticImg");
@@ -416,7 +444,6 @@ function addImage() {
                 var imgObjS = new imgObj(slideObjs[curSlide].itemCount, imgHolder.src, 0, 0, 0, (imgHolder.clientWidth / w) * 100, (imgHolder.clientHeight / h) * 100);
                 slideObjs[curSlide].items[slideObjs[curSlide].itemCount - 1] = imgObjS;
 
-                console.log(imgObjS);
             }
             fr.readAsDataURL(files[0]);
 
@@ -439,14 +466,11 @@ function drawImg(slideObjsTextDraw) {
     for (i = 0; i < slideObjsTextDraw.itemCount; i++) {
         if (slideObjsTextDraw.items[i].type == "img") {
 
-            console.log(slideObjs[1]);
-            console.log(curSlide);
             var imgDivContainer = document.createElement("div");
             imgDivContainer.id = "imgD_s" + slideObjs[curSlide].id + "_t" + slideObjs[curSlide].itemCount;
             imgDivContainer.style = "position:absolute;left:" + slideObjsTextDraw.items[i].positionL + "vw;top:" + slideObjsTextDraw.items[i].positionT +
                 "vh;width:" + slideObjsTextDraw.items[i].widthO + "vw;" + "height:" + slideObjsTextDraw.items[i].heightO + "vh;"
 
-            console.log(slideObjsTextDraw.items[i].widthO);
             var imgHolder = document.createElement("img");
             imgHolder.id = "img_s" + slideObjs[curSlide].id + "_t" + slideObjs[curSlide].itemCount;
             imgHolder.src = slideObjsTextDraw.items[i].imgUrl;
@@ -458,7 +482,7 @@ function drawImg(slideObjsTextDraw) {
 
             imgDivContainer.tabIndex = 1;
 
-
+            drawCaptionOnSlide(slideObjsTextDraw.items[i].caption);
 
             imgDivContainer.appendChild(imgHolder);
 
@@ -487,7 +511,7 @@ function imgClicked(imgObjClick) {
     imgObjClick.target.parentNode.tabIndex = 1;
 
     curClickedObj = imgObjClick.target.parentNode.id;
-    
+
     $("#slideTools").fadeOut();
     $("#textTools").fadeOut();
     $("#imgTools").fadeIn();
@@ -531,6 +555,9 @@ function imgLoseFocus() {
             x[i].onblur = imgLoseFocus;
             x[i].tabIndex = 1;
 
+            $("#slideTools").fadeIn();
+            $("#textTools").fadeOut();
+            $("#imgTools").fadeOut();
         }
 
     }
@@ -538,7 +565,7 @@ function imgLoseFocus() {
 
 //Функция за премахване на обект изображение
 function removeImg() {
-    
+
     var x = document.getElementById("curSlide").children; //Текущите обекти в слайда, x[i] е обект
     //Функцията ще претърси всичките обекти и ще открие записа в БД, съответсващ на обекта
     for (i = 0; i < slideObjs[curSlide].itemCount; i++) {
@@ -553,7 +580,41 @@ function removeImg() {
 }
 
 //Функция за добавяне заглавие под картинка
-function imgAddCaption()
-{
+function imgAddCaption() {
+    //TODO
+    var x = document.getElementById("curSlide").children; //Текущите обекти в слайда, x[i] е обект
+    var objDb = document.getElementById(curClickedObj); //Обект, който ще съдържа записа на текущото изображение в списъка с обекти
+
+    var curObjW, curObjH, curObjT, curObjL; //Променливи съдържащи размера и позицията на обекта
+
+    curObjT = (objDb.offsetTop / h) * 100;
+    curObjL = (objDb.offsetLeft / w) * 100;
+
+    if (objDb.style.width.slice(-2) == "vw") {
+        curObjW = objDb.style.width.slice(0, 2);
+        curObjH = objDb.style.height.slice(0, 2);
+    }
+    else if (objDb.style.width.slice(-2) == "px") {
+        curObjW = ((objDb.style.width.slice(0, -2)) / w) * 100;
+        curObjH = ((objDb.style.height.slice(0, -2)) / h) * 100;
+    }
+
+    var captionObj = new textObj(slideObjCount, "Щракнете два пъти за да добавите текст",curObjT + ((curObjH * (9/16)) /2.5) ,curObjL + (curObjW)/2.5 , "Segoe UI",
+    1, 0, 0, 20,5, "text", "#B40000", "none");
+    //Прототип на caption обекта
     
+    for(var i = 1; i < slideObjs[curSlide].itemCount; i++)
+    {
+        //slideObjs[curSlide].items[i].id == curClickedObj
+        if(curClickedObj == "imgD_s" + slideObjs[curSlide].id + "_t" + slideObjs[curSlide].items[i].id)
+        {
+            console.log("1");
+            slideObjs[curSlide].items[i].caption = captionObj;
+        }
+    }
+    //curClickedObj.caption = captionObj; //Слага обекта caption като стойност на изображението
+    drawCaptionOnSlide(captionObj); //Изчертата обекта
+    
+    
+  
 }

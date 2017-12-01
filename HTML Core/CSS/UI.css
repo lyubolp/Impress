@@ -183,12 +183,21 @@
     position: absolute;
     left:28vh;
 }
-#removeImg
+#addCaption
 {
     height:8vh;
     width:8vh;
     position: absolute;
     left:1vh;
+    top:1vh;
+    text-align: center;
+}
+#removeImg
+{
+    height:8vh;
+    width:8vh;
+    position: absolute;
+    left:10vh;
     top:1vh;
     text-align: center;
 }

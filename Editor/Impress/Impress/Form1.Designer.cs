@@ -30,6 +30,8 @@
         {
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Form1));
             this.panel1 = new System.Windows.Forms.Panel();
+            this.btnGoUrl = new System.Windows.Forms.Button();
+            this.urlBar = new System.Windows.Forms.TextBox();
             this.btnDevTools = new System.Windows.Forms.Button();
             this.btnRefresh = new System.Windows.Forms.Button();
             this.panel2 = new System.Windows.Forms.Panel();
@@ -39,6 +41,8 @@
             // panel1
             // 
             this.panel1.BackColor = System.Drawing.SystemColors.ActiveBorder;
+            this.panel1.Controls.Add(this.btnGoUrl);
+            this.panel1.Controls.Add(this.urlBar);
             this.panel1.Controls.Add(this.btnDevTools);
             this.panel1.Controls.Add(this.btnRefresh);
             this.panel1.Dock = System.Windows.Forms.DockStyle.Top;
@@ -46,6 +50,23 @@
             this.panel1.Name = "panel1";
             this.panel1.Size = new System.Drawing.Size(1340, 32);
             this.panel1.TabIndex = 0;
+            // 
+            // btnGoUrl
+            // 
+            this.btnGoUrl.Location = new System.Drawing.Point(641, 1);
+            this.btnGoUrl.Name = "btnGoUrl";
+            this.btnGoUrl.Size = new System.Drawing.Size(75, 23);
+            this.btnGoUrl.TabIndex = 3;
+            this.btnGoUrl.Text = "button1";
+            this.btnGoUrl.UseVisualStyleBackColor = true;
+            this.btnGoUrl.Click += new System.EventHandler(this.btnGoUrl_Click);
+            // 
+            // urlBar
+            // 
+            this.urlBar.Location = new System.Drawing.Point(175, 4);
+            this.urlBar.Name = "urlBar";
+            this.urlBar.Size = new System.Drawing.Size(460, 20);
+            this.urlBar.TabIndex = 2;
             // 
             // btnDevTools
             // 
@@ -90,6 +111,7 @@
             this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.Form1_FormClosing);
             this.Load += new System.EventHandler(this.Form1_Load);
             this.panel1.ResumeLayout(false);
+            this.panel1.PerformLayout();
             this.ResumeLayout(false);
 
         }
@@ -100,6 +122,8 @@
         private System.Windows.Forms.Panel panel2;
         private System.Windows.Forms.Button btnRefresh;
         private System.Windows.Forms.Button btnDevTools;
+        private System.Windows.Forms.Button btnGoUrl;
+        private System.Windows.Forms.TextBox urlBar;
     }
 }
 

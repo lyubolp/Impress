@@ -62,6 +62,9 @@ function saveData(slidesObjs) {
                 dataToSend[curLines] = slideObjs[i].items[j].textEffect;
                 curLines++;
 
+                dataToSend[curLines] = slideObjs[i].items[j].backColor;
+                curLines++;
+
                 dataToSend[curLines] = slideObjs[i].items[j].widthO;
                 curLines++;
 
@@ -151,8 +154,8 @@ function openData() {
                         slideObjCount++;
                         textObjs[slideObjCount] = new textObj(Number(resultsArray[i + 1]), resultsArray[i + 2].slice(0, -1), Number(resultsArray[i + 3]),
                         Number(resultsArray[i + 4]), resultsArray[i + 6].slice(0,-1),
-                            Number(resultsArray[i + 7]), Number(resultsArray[i + 8]), Number(resultsArray[i + 9]), Number(resultsArray[i + 10]),
-                            Number(resultsArray[i + 11]), resultsArray[i + 12].slice(0, -1), resultsArray[i + 5].slice(0, -1));
+                            Number(resultsArray[i + 7]), Number(resultsArray[i + 8]), Number(resultsArray[i + 9]), Number(resultsArray[i + 11]),
+                            Number(resultsArray[i + 12]), resultsArray[i + 13].slice(0, -1), resultsArray[i + 5].slice(0, -1),resultsArray[i + 10].slice(0, -1));
                         slideObjs[slideCounts].items[slideItemCounts] = textObjs[slideObjCount];
 
                         slideItemCounts++;
