@@ -112,20 +112,6 @@ namespace Impress
         {
             getFonts();
         }
-        protected override bool ProcessCmdKey(ref Message msg, Keys keyData)
-        {
-            bool bHandled = false;
-            switch (keyData)
-            {
-                case Keys.F5:
-                    chromeBrowser.Refresh();
-                    break;
-                case Keys.F12:
-                    chromeBrowser.ShowDevTools();
-                    break;
-            }
-            return bHandled;
-        } //F5 refresh
         public void InitializeChromium()
         {
             CefSettings settings = new CefSettings();

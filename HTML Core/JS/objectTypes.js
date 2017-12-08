@@ -21,7 +21,7 @@ function textObj(idObj,textContent,positionTV,positionLV,fontFamilyV,fontSizeV,f
     this.positionL = positionLV;
     this.fontColor = fontColorV;
     this.fontFamily = fontFamilyV;
-    this.fontSize = fontSizeV   ;
+    this.fontSize = fontSizeV;
     this.fontParams = fontParamsV;
     this.textEffect = textEffectV;
     this.backColor = backColorV;
@@ -41,7 +41,7 @@ function imgObj(idObj, imgUrlV, positionTV, positionLV, effectV, widthV, heightV
     this.effect = effectV;
     this.widthO = widthV;
     this.heightO = heightV;
-    this.caption = captionV;
+    this.captionO = captionV;
     this.type = "img";
 }
 //

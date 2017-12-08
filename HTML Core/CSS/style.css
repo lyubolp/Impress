@@ -10,3 +10,7 @@ textarea
     font-size:1vw;
     margin:0px;
 }
+img
+{
+    z-index: -1;
+}

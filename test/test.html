@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>hello</title>
+	<style type="text/css">
+		#sdf
+		{
+			background-color: red;
+			width:123px;
+			height: 134px;
+		}
+	</style>
+
+
+</head>
+<body>
+	<select id="select">
+		<option>6</option>
+		<option>18</option>
+		<option>54</option>
+	</select>
+<div id="sdf">
+	asdasfasf
+</div>
+
+
+<script
+  src="https://code.jquery.com/jquery-3.2.1.js"
+  integrity="sha256-DZAnKJ/6XZ9si04Hgrsxu/8s717jcIzLy3oi35EouyE="
+  crossorigin="anonymous">
+  </script>
+
+	<script type="text/javascript">
+		
+
+		$('#select').click(function()
+		{
+			$('#sdf').css("font-size", $('#select').val()+'px');
+		});
+	</script>
+
+
+</body>
+
+</html>
