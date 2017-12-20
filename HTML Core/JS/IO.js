@@ -100,60 +100,58 @@ function saveData(slidesObjs) {
                 curLines++;
 
                 console.log(slideObjs[i].items[j].captionO);
-                if(slideObjs[i].items[j].captionO != "none")
-                {
-                    
+                if (slideObjs[i].items[j].captionO != "none") {
+
                     dataToSend[curLines] = "//Caption object";
-                    curLines++;    
-                    
+                    curLines++;
+
                     dataToSend[curLines] = slideObjs[i].items[j].captionO.id;
                     curLines++;
-    
+
                     dataToSend[curLines] = slideObjs[i].items[j].captionO.textC;
                     curLines++;
-    
+
                     dataToSend[curLines] = slideObjs[i].items[j].captionO.positionT;
                     curLines++;
-    
+
                     dataToSend[curLines] = slideObjs[i].items[j].captionO.positionL;
                     curLines++;
-    
+
                     dataToSend[curLines] = slideObjs[i].items[j].captionO.fontColor;
                     curLines++;
-    
+
                     dataToSend[curLines] = slideObjs[i].items[j].captionO.fontFamily;
                     curLines++;
-    
+
                     dataToSend[curLines] = slideObjs[i].items[j].captionO.fontSize;
                     curLines++;
-    
+
                     dataToSend[curLines] = slideObjs[i].items[j].captionO.fontParams;
                     curLines++;
-    
+
                     dataToSend[curLines] = slideObjs[i].items[j].captionO.textEffect;
                     curLines++;
-    
+
                     dataToSend[curLines] = slideObjs[i].items[j].captionO.backColor;
                     curLines++;
-    
+
                     dataToSend[curLines] = slideObjs[i].items[j].captionO.widthO;
                     curLines++;
-    
+
                     dataToSend[curLines] = slideObjs[i].items[j].captionO.heightO;
                     curLines++;
-    
+
                     dataToSend[curLines] = slideObjs[i].items[j].captionO.type;
                     curLines++;
-                    
+
                     dataToSend[curLines] = "//End caption";
-                    curLines++;    
+                    curLines++;
                 }
-                else
-                {
+                else {
                     dataToSend[curLines] = "none";
                     curLines++;
                 }
-                
+
                 dataToSend[curLines] = slideObjs[i].items[j].type;
                 curLines++;
             }
@@ -199,15 +197,16 @@ function openData() {
 
                     if (resultsArray[i].slice(0, -1).localeCompare("//Begin slide") == 0) {
                         slideCounts++;
+                        slides = slideCounts;
                         slideObjs[slideCounts] = new slide(resultsArray[i + 1].slice(0, -1), resultsArray[i + 2].slice(0, -1), resultsArray[i + 3].slice(0, -1), resultsArray[i + 4].slice(0, -1), resultsArray[i + 5].slice(0, -1));
                     }
 
                     if (resultsArray[i].slice(0, -1).localeCompare("//Text object") == 0) {
                         slideObjCount++;
                         textObjs[slideObjCount] = new textObj(Number(resultsArray[i + 1]), resultsArray[i + 2].slice(0, -1), Number(resultsArray[i + 3]),
-                        Number(resultsArray[i + 4]), resultsArray[i + 6].slice(0,-1),
+                            Number(resultsArray[i + 4]), resultsArray[i + 6].slice(0, -1),
                             Number(resultsArray[i + 7]), Number(resultsArray[i + 8]), Number(resultsArray[i + 9]), Number(resultsArray[i + 11]),
-                            Number(resultsArray[i + 12]), resultsArray[i + 13].slice(0, -1), resultsArray[i + 5].slice(0, -1),resultsArray[i + 10].slice(0, -1));
+                            Number(resultsArray[i + 12]), resultsArray[i + 13].slice(0, -1), resultsArray[i + 5].slice(0, -1), resultsArray[i + 10].slice(0, -1));
                         slideObjs[slideCounts].items[slideItemCounts] = textObjs[slideObjCount];
 
                         slideItemCounts++;
@@ -217,23 +216,38 @@ function openData() {
                     }
                     if (resultsArray[i].slice(0, -1).localeCompare("//Img object") == 0) {
 
-                        slideObjs[slideCounts].itemCount++;
-                        var captionObjF = new textObj(resultsArray[i + 9], resultsArray[i + 10].slice(0, -1), Number(resultsArray[i + 11]),
-                        Number(resultsArray[i + 12]), resultsArray[i + 14].slice(0,-1),
-                            Number(resultsArray[i + 15]), Number(resultsArray[i + 16]), Number(resultsArray[i + 17]), Number(resultsArray[i + 19]),
-                            Number(resultsArray[i + 20]), resultsArray[i + 21].slice(0, -1), resultsArray[i + 13].slice(0, -1),resultsArray[i + 18].slice(0, -1));
+                        if (resultsArray[i + 8].slice(0, -1) == "none") {
+                            var imgObjS = new imgObj(Number(resultsArray[i + 1]),
+                                resultsArray[i + 2].slice(0, -1), Number(resultsArray[i + 3].slice(0, -1)), Number(resultsArray[i + 4].slice(0, -1)), Number(resultsArray[i + 5].slice(0, -1)),
+                                Number(resultsArray[i + 6].slice(0, -1)), Number(resultsArray[i + 7].slice(0, -1)), "none");
 
-                        console.log(captionObjF);
-                        var imgObjS = new imgObj(Number(resultsArray[i + 1]),
-                            resultsArray[i + 2].slice(0, -1), Number(resultsArray[i + 3].slice(0, -1)), Number(resultsArray[i + 4].slice(0, -1)), Number(resultsArray[i + 5].slice(0, -1)),
-                            Number(resultsArray[i + 6].slice(0, -1)), Number(resultsArray[i + 7].slice(0, -1)),resultsArray[i + 8].slice(0, -1), 
-                            captionObjF);
-                        imgObjS.captionO = captionObjF;
-                        slideObjs[slideCounts].items[slideObjs[slideCounts].itemCount - 1] = imgObjS;
+                            slideObjs[slideCounts].items[slideItemCounts] = imgObjS;
 
-                        console.log(slideObjs[slideCounts].items);
+                            slideItemCounts++;
+                            slideObjs[slideCounts].itemCount = slideItemCounts;
+                            
+                        }
+                        else {
+
+                            var captionObjF = new textObj(resultsArray[i + 9], resultsArray[i + 10].slice(0, -1), Number(resultsArray[i + 11]),
+                                Number(resultsArray[i + 12]), resultsArray[i + 14].slice(0, -1),
+                                Number(resultsArray[i + 15]), Number(resultsArray[i + 16]), Number(resultsArray[i + 17]), Number(resultsArray[i + 19]),
+                                Number(resultsArray[i + 20]), resultsArray[i + 21].slice(0, -1), resultsArray[i + 13].slice(0, -1), resultsArray[i + 18].slice(0, -1));
+
+                            var imgObjS = new imgObj(Number(resultsArray[i + 1]),
+                                resultsArray[i + 2].slice(0, -1), Number(resultsArray[i + 3].slice(0, -1)), Number(resultsArray[i + 4].slice(0, -1)), Number(resultsArray[i + 5].slice(0, -1)),
+                                Number(resultsArray[i + 6].slice(0, -1)), Number(resultsArray[i + 7].slice(0, -1)), "none");
+
+                            imgObjS.captionO = captionObjF;
+                            slideObjs[slideCounts].items[slideItemCount] = imgObjS;
+
+                            slideItemCounts++;
+                            slideObjs[slideCounts].itemCount = slideItemCounts;
+                        }
+
                     }
                 }
+                console.log(slideObjs[1].items);
                 drawSlide(slideObjs[1]);
 
 
@@ -262,7 +276,7 @@ function loadFonts() {
 
                 installedFonts = rawFile.responseText.split("\n");
                 installedFontsCount = installedFonts.length + 1;
-                
+
             }
         }
     }
@@ -271,13 +285,17 @@ function loadFonts() {
     fontsListObj.onchange = changeFont;
 
     for (i = 0; i < installedFontsCount; i++) {
-        
+
         var optionObj = document.createElement("option");
         var optionC = installedFonts[i];
+        var fontsSizeObj = document.getElementById("selectFontSize");
+
         optionObj.textContent = optionC;
         optionObj.value = optionC;
+        fontsSizeObj.onchange = changeFontSize;
+    
 
         fontsListObj.appendChild(optionObj);
     }
-    
+
 }

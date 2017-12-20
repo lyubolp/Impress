@@ -15,21 +15,20 @@ using System.Drawing.Text;
 
 namespace Impress
 {
-    public partial class Form1 : Form
+    public partial class frmMain : Form
     {
         public ChromiumWebBrowser chromeBrowser;
-
-
+        partial void FullScreen();
         class BridgeClass
         {
 
             // Declare a local instance of chromium and the main form in order to execute things from here in the main thread
             private static ChromiumWebBrowser _instanceBrowser = null;
             // The form class needs to be changed according to yours
-            private static Form1 _instanceMainForm = null;
+            private static frmMain _instanceMainForm = null;
 
-
-            public BridgeClass(ChromiumWebBrowser originalBrowser, Form1 mainForm)
+            
+            public BridgeClass(ChromiumWebBrowser originalBrowser, frmMain mainForm)
             {
                 _instanceBrowser = originalBrowser;
                 _instanceMainForm = mainForm;
@@ -73,13 +72,51 @@ namespace Impress
                     AnyColor = false,
                     FullOpen = true
                 };
-
                 if (slideColorDiagObj.ShowDialog() == DialogResult.OK)
                 {
                     hexResult = "#" + slideColorDiagObj.Color.R.ToString("X2") + slideColorDiagObj.Color.G.ToString("X2") + slideColorDiagObj.Color.B.ToString("X2");
                     return hexResult;
                 }
+
+                //slideColorDiagObj.Dispose();
                 return "Nope";
+            }
+            public void startFullScreen()
+            {
+                if (frmMain.ActiveForm.InvokeRequired)
+                {
+                    frmMain.ActiveForm.BeginInvoke((MethodInvoker)delegate () {
+
+                        frmMain.ActiveForm.WindowState = FormWindowState.Normal;
+                        frmMain.ActiveForm.FormBorderStyle = FormBorderStyle.None;
+                        frmMain.ActiveForm.WindowState = FormWindowState.Maximized;             
+                    });
+                }
+                else
+                {
+                    frmMain.ActiveForm.WindowState = FormWindowState.Normal;
+                    frmMain.ActiveForm.FormBorderStyle = FormBorderStyle.None;
+                    frmMain.ActiveForm.WindowState = FormWindowState.Maximized;
+                }
+            }
+
+            public void stopFullScreen()
+            {
+                if (frmMain.ActiveForm.InvokeRequired)
+                {
+                    frmMain.ActiveForm.BeginInvoke((MethodInvoker)delegate () {
+
+                        frmMain.ActiveForm.WindowState = FormWindowState.Normal;
+                        frmMain.ActiveForm.FormBorderStyle = FormBorderStyle.Sizable;
+                        frmMain.ActiveForm.WindowState = FormWindowState.Maximized;
+                    });
+                }
+                else
+                {
+                    frmMain.ActiveForm.WindowState = FormWindowState.Normal;
+                    frmMain.ActiveForm.FormBorderStyle = FormBorderStyle.Sizable;
+                    frmMain.ActiveForm.WindowState = FormWindowState.Maximized;
+                }
             }
         }
 
@@ -98,7 +135,7 @@ namespace Impress
             }
         }
 
-        public Form1()
+        public frmMain()
         {
             InitializeComponent();
             // Start the browser after initialize global component

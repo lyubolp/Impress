@@ -59,6 +59,7 @@ var curClickedObj; //Текущия натиснат обект
 var installedFonts = []; //Списъл с инсталираните шрифтове
 var installedFontsCount = 0; //Броя на инсталираните шрифтове
 
+var isFullScreen = false; //Проверка дали презентацията е в режим на представяне 
 //Променливи за откриване на viewport-width и viewport-height (размера на прозореца)
 var w = Math.max(document.documentElement.clientWidth, window.innerWidth || 0);
 var h = Math.max(document.documentElement.clientHeight, window.innerHeight || 0);
@@ -88,7 +89,7 @@ function startNew() {
     slideObjs[1].itemCount = 1; //Броя на обектите в слайда става 1 
 
     drawSlide(slideObjs[1]); //Изчертаване на първия слайд
-    //loadFonts();
+    loadFonts(); //Зареждане на шрифтове
 }
 //Функция за преминаване към предишния слайд
 function prevSlide() {
@@ -100,6 +101,7 @@ function prevSlide() {
 }
 //Функция за преминаване към следващия слайд
 function nextSlide() {
+    console.log(slides + " " + curSlide);
     if (slides != curSlide) { //Проверка дали не сме на последния слайд
         textBoxLoseFocus(); //Изключваме фокуса над всички обекти
         curSlide++; //Увеличаваме индекса на текущия слайда с 1
@@ -114,6 +116,32 @@ function drawSlide(slideObjToDraw) {
     var curSlideObj = document.getElementById("curSlide");  //Намираме слайда от DOM
     curSlideObj.innerText = ""; //Задаваме му текста да е празен
     curSlideObj.style.backgroundColor = slideObjToDraw.backColor; //Добавяме стойност за цвят на фона от масива с данни
+    //Функция за откриване на натиснат клавиш
+    $(document).keydown(function (e) {
+        switch (e.which) {
+
+            case 27: // esc
+                cefCustomObject.stopFullScreen();
+                stopPresenting();
+                break;
+            case 37: // left
+                prevSlide();
+                break;
+
+            case 38: // up
+                break;
+
+            case 39: // right
+                nextSlide();
+                break;
+
+            case 40: // down
+                break;
+
+            default: return; // exit this handler for other keys
+        }
+        e.preventDefault(); // prevent the default action (scroll / move caret)
+    });
     curSlide = slideObjToDraw.id; //Задава индекса на текущия слайд да е id-то му в масива с данни
     document.getElementById("curSlideNum").innerText = curSlide; //Временен код, който показва номера на текущия слайд
 
@@ -146,7 +174,7 @@ function addNewSlide() {
 
 //Функция за фокусиране върху слайд, чрез премахване на фокуса от другите обекти
 function focusOnSlide() {
-    textBoxLoseFocus(); 
+    textBoxLoseFocus();
 }
 
 //Функция за преизчертаване на слайд
@@ -179,6 +207,7 @@ function changeBGColor() {
     slideObjs[curSlide].backColor = colorString; //Записва стойността в масива 
 
 }
+
 //*----------------------------------------*
 //Функции на текстовото поле
 //*----------------------------------------*
@@ -290,7 +319,7 @@ function textBoxClicked(textBoxObj) {
 
         textBoxObj.target.tabIndex = 1; //Задаване на tabIndex, с цел да работи loseFocus()
         //textBoxObj.target.onblur = textBoxLoseFocus;
- 
+
         $(".textInputWrapper").draggable(); //Възможност обекта да се мести с jQuery Drag&Drop API
 
         textBoxObj.target.appendChild(editTextPrototype); //Добавяме обекта към DOM на главния текстов обект
@@ -408,8 +437,24 @@ function changeFont() {
     //slideObjs[curSlide].backColor = colorObj.value;
     //Преминаваме през всички елементи на масива с данни и търсим къде се намира в масива текущия DOM обект
     for (j = 0; j < slideObjs[curSlide].itemCount; j++) {
-        if (x[i].id == "text_s" + slideObjs[curSlide].id + "_t" + slideObjs[curSlide].items[j].id && slideObjs[curSlide].items[j].type == "text") {
-            slideObjs[curSlide].items[j].fontColor = colorObj.value; //Задаваме му стойността от fontDialog-а
+        if (x[j].id == "text_s" + slideObjs[curSlide].id + "_t" + slideObjs[curSlide].items[j].id && slideObjs[curSlide].items[j].type == "text") {
+            slideObjs[curSlide].items[j].fontFamily = selectObjL.value; //Задаваме му стойността от fontDialog-а
+        }
+    }
+}
+function changeFontSize() {
+    var selectObjL = document.getElementById("selectFontSize"); //Намира DOM обекта, отговарящ за избор на шрифт
+    var x = document.getElementById("curSlide").children; //Прехвърля всички шрифтове към масив
+
+    console.log(selectObjL.value);
+    document.getElementById(curClickedObj).style.fontSize = selectObjL.value + "vw"; //Задава текущия шрифт, който е избран в селектора за шрифт
+    document.getElementById(curClickedObj).children[0].style.fontSize = selectObjL.value + "vw"; //Ако обекта за текст е активиран, задава шрифта в textarea-та
+
+    //slideObjs[curSlide].backColor = colorObj.value;
+    //Преминаваме през всички елементи на масива с данни и търсим къде се намира в масива текущия DOM обект
+    for (j = 0; j < slideObjs[curSlide].itemCount; j++) {
+        if (x[j].id == "text_s" + slideObjs[curSlide].id + "_t" + slideObjs[curSlide].items[j].id && slideObjs[curSlide].items[j].type == "text") {
+            slideObjs[curSlide].items[j].fontSize = selectObjL.value; //Задаваме му стойността от fontDialog-а
         }
     }
 }
@@ -464,7 +509,7 @@ function addImage() {
             files = tgt.files; //Имаме target, спрямо резултата
 
         // Проверка за подръжка на FileReader
-        if (FileReader && files && files.length) { 
+        if (FileReader && files && files.length) {
             var fr = new FileReader(); //Нов обект fileReader
             fr.onload = function () { //След зареждане на fileReader се изпълнява следния код
 
@@ -485,8 +530,8 @@ function addImage() {
                 //$("#" + imgDivContainer.id).draggable();
 
 
-                var imgObjS = new imgObj(slideObjs[curSlide].itemCount, imgHolder.src, 0, 0, 0, (imgHolder.clientWidth / w) * 100, 
-                (imgHolder.clientHeight / h) * 100, "none");
+                var imgObjS = new imgObj(slideObjs[curSlide].itemCount, imgHolder.src, 0, 0, 0, (imgHolder.clientWidth / w) * 100,
+                    (imgHolder.clientHeight / h) * 100, "none");
                 slideObjs[curSlide].items[slideObjs[curSlide].itemCount - 1] = imgObjS;
 
             }
@@ -508,12 +553,11 @@ function addImage() {
 function drawImg(slideObjsTextDraw) {
     var curSlideObj = document.getElementById("curSlide"); //Намираме текущия DOM обект
 
-
-    for (i = 0; i < slideObjsTextDraw.itemCount; i++) { //Преминаваме през всички обекти в масива с данни
+    for (i = 0; i < slideObjsTextDraw.itemCount; i++) { //Преминаваме през всички обекти в масива с данни    
         if (slideObjsTextDraw.items[i].type == "img") { //Ако типа на обекта е изображение, преминава към изчертаването му
 
             var imgDivContainer = document.createElement("div"); //Създаваме контейнер за изображението
-            imgDivContainer.id = "imgD_s" + slideObjs[curSlide].id + "_t" + slideObjs[curSlide].itemCount;
+            imgDivContainer.id = "imgD_s" + slideObjs[curSlide].id + "_t" + slideObjs[curSlide].items[i].id;
             imgDivContainer.style = "position:absolute;left:" + slideObjsTextDraw.items[i].positionL + "vw;top:" + slideObjsTextDraw.items[i].positionT +
                 "vh;width:" + slideObjsTextDraw.items[i].widthO + "vw;" + "height:" + slideObjsTextDraw.items[i].heightO + "vh;"
 
@@ -663,4 +707,31 @@ function imgAddCaption() {
 
 
 
+}
+
+
+//Функция за изпълнение
+function playImpress() {
+    cefCustomObject.startFullScreen();
+    isFullScreen = true;
+
+    $("#topBar").hide();
+    $("#leftBar").hide();
+    $("#rightBar").hide();
+
+    document.getElementById("curSlide").style.width = "100vw";
+    document.getElementById("curSlide").style.height = "100vh";
+    document.getElementById("curSlide").style.top = "0vw";
+    document.getElementById("curSlide").style.left = "0vw";
+}
+
+function stopPresenting() {
+    $("#topBar").show();
+    $("#leftBar").show();
+    $("#rightBar").show();
+
+    document.getElementById("curSlide").style.width = "72vw";
+    document.getElementById("curSlide").style.height = "40.5vw";
+    document.getElementById("curSlide").style.top = "13vh";
+    document.getElementById("curSlide").style.left = "11vw";
 }
