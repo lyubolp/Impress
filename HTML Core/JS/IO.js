@@ -196,6 +196,7 @@ function openData() {
                 for (i = 0; i < arrayL; i++) {
 
                     if (resultsArray[i].slice(0, -1).localeCompare("//Begin slide") == 0) {
+                        slideItemCounts = 0;
                         slideCounts++;
                         slides = slideCounts;
                         slideObjs[slideCounts] = new slide(resultsArray[i + 1].slice(0, -1), resultsArray[i + 2].slice(0, -1), resultsArray[i + 3].slice(0, -1), resultsArray[i + 4].slice(0, -1), resultsArray[i + 5].slice(0, -1));
@@ -228,7 +229,7 @@ function openData() {
                             
                         }
                         else {
-
+                            console.log("Caption to load");
                             var captionObjF = new textObj(resultsArray[i + 9], resultsArray[i + 10].slice(0, -1), Number(resultsArray[i + 11]),
                                 Number(resultsArray[i + 12]), resultsArray[i + 14].slice(0, -1),
                                 Number(resultsArray[i + 15]), Number(resultsArray[i + 16]), Number(resultsArray[i + 17]), Number(resultsArray[i + 19]),
@@ -247,7 +248,7 @@ function openData() {
 
                     }
                 }
-                console.log(slideObjs[1].items);
+                console.log(slideItemCounts);
                 drawSlide(slideObjs[1]);
 
 

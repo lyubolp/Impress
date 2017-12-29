@@ -308,8 +308,9 @@ function textBoxClicked(textBoxObj) {
 
 
         editTextPrototype.style = "width:" + textBoxObj.target.style.width + "; height:" + textBoxObj.target.style.height + ";" +
-            "margin:0px;" + "font-family:" + textBoxObj.target.style.fontFamily + ";";
+            "margin:0px;" + "font-family:" + textBoxObj.target.style.fontFamily + ";" + "font-size:" + textBoxObj.target.style.fontSize;
 
+        showFontSize(textBoxObj.target.style.fontSize);
         //С textBoxObj.target се достига до текущия натиснат обект
 
         textBoxObj.target.childNodes[0].nodeValue = ""; //.innerHTML прави проблеми
@@ -474,8 +475,33 @@ function removeText() {
     }
     slideObjs[curSlide].itemCount--; //Намалява броя на елементите в слайда
 }
+function showFontSize(fontSizeVal) {
 
-//*----------------------------------------*
+    var valueFS = fontSizeVal.slice(0, -2);
+    var selectObjL = document.getElementById("selectFontSize"); //Намира DOM обекта, отговарящ за избор на шрифт
+
+    if(valueFS == "0.25" || valueFS == "0.75" || valueFS == "2.25" ||valueFS == "2.75" ||
+    valueFS == "3.25"|| valueFS == "3.75" || valueFS == "4.25" || valueFS == "4.75")
+    {
+        selectObjL.value = valueFS;  
+    }
+    else if(valueFS == "1" || valueFS == "2" || valueFS == "3" || valueFS == "4" || valueFS == "5")
+    {
+        valueFS = valueFS + ".00";
+        selectObjL.value = valueFS;
+    }
+    else
+    {
+        valueFS = valueFS + "0";
+        selectObjL.value = valueFS;
+    }
+    console.log(valueFS);
+    //Показва текущия размер на шрифта в полето за избор на шрифт
+    
+
+    //selectObjL.value = textBoxObj.target.style.fontSize;
+
+}
 //Функции на изображение
 //*----------------------------------------*
 
