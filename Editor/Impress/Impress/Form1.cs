@@ -15,20 +15,21 @@ using System.Drawing.Text;
 
 namespace Impress
 {
-    public partial class frmMain : Form
+    public partial class Form1 : Form
     {
         public ChromiumWebBrowser chromeBrowser;
-        partial void FullScreen();
+
+
         class BridgeClass
         {
 
             // Declare a local instance of chromium and the main form in order to execute things from here in the main thread
             private static ChromiumWebBrowser _instanceBrowser = null;
             // The form class needs to be changed according to yours
-            private static frmMain _instanceMainForm = null;
+            private static Form1 _instanceMainForm = null;
 
-            
-            public BridgeClass(ChromiumWebBrowser originalBrowser, frmMain mainForm)
+
+            public BridgeClass(ChromiumWebBrowser originalBrowser, Form1 mainForm)
             {
                 _instanceBrowser = originalBrowser;
                 _instanceMainForm = mainForm;
@@ -36,6 +37,8 @@ namespace Impress
 
             public void saveImpress(object[] saveData)
             {
+
+
                 SaveFileDialog saveFileDia = new SaveFileDialog();
                 saveFileDia.Filter = "Impress presentation files|*.imf";
                 
@@ -60,64 +63,6 @@ namespace Impress
                 MessageBox.Show("File saved");
             }
 
-            public string colorDialogFun()
-            {
-                //This code shows a colorDialog from the WinForms API
-                //The result is in ARGB, so we covnert it to #RRGGBB format, usable in HTML
-                //Then we return the string
-                string hexResult;
-                ColorDialog slideColorDiagObj = new ColorDialog()
-                {
-                    AllowFullOpen = true,
-                    AnyColor = false,
-                    FullOpen = true
-                };
-                if (slideColorDiagObj.ShowDialog() == DialogResult.OK)
-                {
-                    hexResult = "#" + slideColorDiagObj.Color.R.ToString("X2") + slideColorDiagObj.Color.G.ToString("X2") + slideColorDiagObj.Color.B.ToString("X2");
-                    return hexResult;
-                }
-
-                //slideColorDiagObj.Dispose();
-                return "Nope";
-            }
-            public void startFullScreen()
-            {
-                if (frmMain.ActiveForm.InvokeRequired)
-                {
-                    frmMain.ActiveForm.BeginInvoke((MethodInvoker)delegate () {
-
-                        frmMain.ActiveForm.WindowState = FormWindowState.Normal;
-                        frmMain.ActiveForm.FormBorderStyle = FormBorderStyle.None;
-                        frmMain.ActiveForm.WindowState = FormWindowState.Maximized;             
-                    });
-                }
-                else
-                {
-                    frmMain.ActiveForm.WindowState = FormWindowState.Normal;
-                    frmMain.ActiveForm.FormBorderStyle = FormBorderStyle.None;
-                    frmMain.ActiveForm.WindowState = FormWindowState.Maximized;
-                }
-            }
-
-            public void stopFullScreen()
-            {
-                if (frmMain.ActiveForm.InvokeRequired)
-                {
-                    frmMain.ActiveForm.BeginInvoke((MethodInvoker)delegate () {
-
-                        frmMain.ActiveForm.WindowState = FormWindowState.Normal;
-                        frmMain.ActiveForm.FormBorderStyle = FormBorderStyle.Sizable;
-                        frmMain.ActiveForm.WindowState = FormWindowState.Maximized;
-                    });
-                }
-                else
-                {
-                    frmMain.ActiveForm.WindowState = FormWindowState.Normal;
-                    frmMain.ActiveForm.FormBorderStyle = FormBorderStyle.Sizable;
-                    frmMain.ActiveForm.WindowState = FormWindowState.Maximized;
-                }
-            }
         }
 
         void getFonts()
@@ -130,25 +75,38 @@ namespace Impress
                 fontListCreator.AutoFlush = true;
                 foreach (FontFamily font in fontFamilies)
                 {
-                    fontListCreator.WriteLine(font.Name);
+                    fontListCreator.WriteLine(font.Name);    
                 }
             }
         }
 
-        public frmMain()
+        public Form1()
         {
             InitializeComponent();
             // Start the browser after initialize global component
             InitializeChromium();
 
             chromeBrowser.RegisterJsObject("cefCustomObject", new BridgeClass(chromeBrowser, this));
-            
         }
 
         private void Form1_Load(object sender, EventArgs e)
         {
             getFonts();
         }
+        protected override bool ProcessCmdKey(ref Message msg, Keys keyData)
+        {
+            bool bHandled = false;
+            switch (keyData)
+            {
+                case Keys.F5:
+                    chromeBrowser.Refresh();
+                    break;
+                case Keys.F12:
+                    chromeBrowser.ShowDevTools();
+                    break;
+            }
+            return bHandled;
+        } //F5 refresh
         public void InitializeChromium()
         {
             CefSettings settings = new CefSettings();
@@ -175,9 +133,6 @@ namespace Impress
             BrowserSettings browserSettings = new BrowserSettings();
             browserSettings.FileAccessFromFileUrls = CefState.Enabled;
             browserSettings.UniversalAccessFromFileUrls = CefState.Enabled;
-            browserSettings.Javascript = CefState.Enabled;
-            browserSettings.LocalStorage = CefState.Enabled;
-            
             chromeBrowser.BrowserSettings = browserSettings;
 
         }
@@ -188,18 +143,13 @@ namespace Impress
         }
 
         private void btnRefresh_Click(object sender, EventArgs e)
-        {   
-            chromeBrowser.Reload();
+        {
+            chromeBrowser.Refresh();
         }
 
         private void btnDevTools_Click(object sender, EventArgs e)
         {
             chromeBrowser.ShowDevTools();
-        }
-
-        private void btnGoUrl_Click(object sender, EventArgs e)
-        {
-            chromeBrowser.Load(urlBar.Text);
         }
     }
 }

@@ -31,93 +31,35 @@
 <body id="mainBody" onload="startNew()">
     <div id="topBar">
         <div id="fileTools">
-            <div id="newImpress" onmousedown="startNew()">
-                <img src="Icons/FileIcon.png" width="75%" />Нов</div>
-            <div id="openImpress" onmousedown="openData()">
-                <img src="Icons/IconOpen.png" width="75%" />Отвори</div>
-            <div id="saveImpress" onmousedown="saveData()">
-                <img src="Icons/IconSave.png" width="75%" />Запази</div>
+            <div id="newImpress" onmousedown="startNew()"><img src="Icons/FileIcon.png" width="75%" />Нов</div>
+            <div id="openImpress" onmousedown="openData()"><img src="Icons/IconOpen.png" width="75%" />Отвори</div>
+            <div id="saveImpress" onmousedown="saveData()"><img src="Icons/IconSave.png" width="75%" />Запази</div>
         </div>
         <div id="slideTools">
-            <div id="playImpress" onmousedown="playImpress()">
-                <img src="Icons/IconPlay.png" width="40%" />
-                <br/>Пусни</div>
-            <div id="changeBackColor" onmousedown="changeBGColor()">
-                <img src="Icons/IconChangeBG.png" width="40%" />
-                <br/>Цвят на фона</div>
+            <div id="changeBackColor" onmousedown="changeBGColor()"><img src="Icons/IconChangeBG.png" width="40%" /><br/>Цвят на фона</div>
         </div>
         <div id="textTools">
-            <div id="changeFontColor" onmousedown="changeFontColor()">
-                <img src="Icons/IconFontColor.png" width="40%" />
-                <br/>Цвят на текст</div>
-            <div id="changeFont">
-                <select id="selectFont"></select>
-                <br/>Шрифт</div>
-            <div id="changeFontSize">
-                <select id="selectFontSize">
-                    <option>0.25</option>
-                    <option>0.50</option>
-                    <option>0.75</option>
-                    <option selected="true">1.00</option>
-                    <option>1.10</option>
-                    <option>1.20</option>
-                    <option>1.30</option>
-                    <option>1.40</option>
-                    <option>1.50</option>
-                    <option>1.60</option>
-                    <option>1.70</option>
-                    <option>1.80</option>
-                    <option>1.90</option>
-                    <option>2.00</option>
-                    <option>2.25</option>
-                    <option>2.50</option>
-                    <option>2.75</option>
-                    <option>3.00</option>
-                    <option>3.25</option>
-                    <option>3.50</option>
-                    <option>3.75</option>
-                    <option>4.00</option>
-                    <option>4.25</option>
-                    <option>4.50</option>
-                    <option>4.75</option>
-                    <option>5.00</option>
-                </select>
-                <br/>Размер на шрифта
-            </div>
-            <div id="removeText" onmousedown="removeText()">
-                <img src="Icons/IconRemoveObject.png" width="40%">
-                <br/>Премахни обект</div>
+            <div id="changeFontColor" onmousedown="changeFontColor()"><img src="Icons/IconFontColor.png" width="40%" /><br/>Цвят на текст</div>
+            <div id="changeFont"><select id="selectFont"></select><br/>Шрифт</div>
+            <div id="removeText" onmousedown="removeText()"><img src="Icons/IconRemoveObject.png" width="40%"><br/>Премахни обект</div>
         </div>
         <div id="imgTools">
-            <div id="addCaption" onmousedown="imgAddCaption()">
-                <img src="Icons/IconRemoveObject.png" width="40%">
-                <br/>Добави текст</div>
-            <div id="removeImg" onmousedown="removeImg()">
-                <img src="Icons/IconRemoveObject.png" width="40%">
-                <br/>Премахни обект</div>
+            <div id="removeImg" onmousedown="removeImg()"><img src="Icons/IconRemoveObject.png" width="40%"><br/>Премахни обект</div>
         </div>
     </div>
     <div id="leftBar">
         <br/>
-        <div id="btnNewSlide" class="leftBarBtn" onmousedown="addNewSlide()">
-            <img src="Icons/IconNewSlide.png" width="75%" />Нов слайд</div>
-        <br/>
-        <div id="btnAddTextField" class="leftBarBtn" onmousedown="addTextField()">
-            <img src="Icons/IconTextBox.png" width="75%" />Добави текстово поле</div>
-        <br/>
-        <div id="btnAddImg" class="leftBarBtn" onmousedown="addImage()">
-            <img src="Icons/IconImage.png" width="75%" />Добави изображение </div>
-        <br/>
+        <div id="btnNewSlide" class="leftBarBtn" onmousedown="addNewSlide()"><img src="Icons/IconNewSlide.png" width="75%" />Нов слайд</div> <br/>
+        <div id="btnAddTextField" class="leftBarBtn" onmousedown="addTextField()"><img src="Icons/IconTextBox.png" width="75%" />Добави текстово поле</div> <br/>
+        <div id="btnAddImg" class="leftBarBtn" onmousedown="addImage()"><img src="Icons/IconImage.png" width="75%" />Добави изображение </div> <br/>
 
     </div>
     <div id="rightBar">
         <!--<div id="slideThumb1" class="slideThumb"></div>-->
         <div id="prevSlide" onclick="prevSlide()">Предишен слайд</div>
-        <!--временен бутон за пускане на предишния слайд-->
-        <br/>
+        <!--временен бутон за пускане на предишния слайд--><br/>
         <div id="nextSlide" onclick="nextSlide()">Следващ слайд</div>
-        <!--временен бутон за пускане на следващ слайд-->
-        <br/>
+        <!--временен бутон за пускане на следващ слайд--><br/>
         <div id="curSlideNum">0</div>
         <!--номер на текущ слайд-->
     </div>

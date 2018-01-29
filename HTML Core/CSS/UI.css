@@ -77,7 +77,7 @@
 }
 .staticImg
 {
-    z-index: 2;
+    
 }
 
 .editImg
@@ -123,19 +123,11 @@
     height:8vh;
     width:8vh;
     position: absolute;
-    left:9vh;
-    top:1vh;
-    text-align: center;
-}
-#playImpress
-{
-    height:8vh;
-    width:8vh;
-    position: absolute;
     left:1vh;
     top:1vh;
     text-align: center;
 }
+
 #changeFontColor
 {
     height:8vh;
@@ -169,23 +161,9 @@
     height: 8vh;
     width:35vh;
 }
-#changeFontSize
-{
-    position: absolute;
-    left:46vh;
-    top:1vh;
-    text-align: center;
-    height: 8vh;
-    width:10vh;
-}
 #selectFont
 {
     width: 35vh;
-    font-size:1.1vw;
-}
-#selectFontSize
-{
-    width: 10vh;
     font-size:1.1vw;
 }
 
@@ -194,7 +172,7 @@
     height:8vh;
     width:8vh;
     position: absolute;
-    left:57vh;
+    left:46vh;
     top:1vh;
     text-align: center;
 }
@@ -205,21 +183,12 @@
     position: absolute;
     left:28vh;
 }
-#addCaption
-{
-    height:8vh;
-    width:8vh;
-    position: absolute;
-    left:1vh;
-    top:1vh;
-    text-align: center;
-}
 #removeImg
 {
     height:8vh;
     width:8vh;
     position: absolute;
-    left:10vh;
+    left:1vh;
     top:1vh;
     text-align: center;
 }

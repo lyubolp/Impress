@@ -50,11 +50,24 @@
             background-color: #E57220;
         }
     </style>
+    <script>
+        function testCode() {
+            document.getElementById("imgContainer").style.width = "600px";
+            console.log(document.getElementById("testImg").width);
+
+        }
+        $(function () {
+            $("#imgContainer").resizable();
+            $("#imgContainer").draggable();
+        });
+    </script>
 </head>
 
 <body id="mainBody" onload="testCode()">
-    
-    <script src="greeter.js"></script>
+    <div id="imgContainer" class="testeditImg" draggable="true">
+        <img src="testImg.png" id="testImg" class="img" />
+    </div>
+
 
 </body>
 

@@ -2,48 +2,6 @@
 userSlide.js
 
 Това е файл, съдържащ главните функции по обектите в слайдовете.
-Съдържание:
-
-Функции на слайдове:
-    startNew()
-    prevSlide()
-    nextSlide()
-    drawSlide()
-    addNewSlide()
-    focusOnSlide()
-    redrawSlide()
-    nukeSlides()
-    changeBGColor()
-
-
-Функции на текстово поле:
-    addTextField()
-    drawText()
-    drawCaptionOnSlide()
-    textBoxClicked()
-    textBoxLoseFocus()
-    changeFontColor()
-    changeFont()
-    removeText()
-
-
-Функции на изображение:
-    addImage()
-    drawImage()
-    imgClicked()
-    imgLoseFocus()
-    removeImg()
-    imgAddCaption()
-    
-Важни особености:
-1. Всички слайдове за обект (структура, дефинирана в objectTypes.js) съдържащ свойствата на слайда, и различните обекти по самия слайд. 
-2. Всеки обект по слайда (текстово поле, изображение, т.н.) отново е обект (структура дефинирана в objectTypes.js) заедно със съответните свойства.
-3. slideObjs[] е главния масив, който съдържа всички обекти. ПЪРВИЯ ЕЛЕМЕНТ Е С ИНДЕКС 1, А НЕ 0 !!!
-4. slideObjs[] служи за изчертването на всички елементи по цялата презентация. Всяко едно нещо, което трябва да е на слайда, трябва да е в този масив.
-5. Всеки обект има две състояния - фокусиран и не-фокусиран (пример - textBoxClicked() дава фокус на текстовото поле и дава възможност на потребителя да го променя,
-    textBoxLoseFocus() - текстовото поле вече не е фокусирано, т.е. вече не може да се редактира текста в него.) Функцията за загуба на фокус на обект също така
-    изпраща и текущите стойности от DOM към масива slideObjs[].
-
 Написан от: Любослав Карев
 */
 
@@ -59,8 +17,7 @@ var curClickedObj; //Текущия натиснат обект
 var installedFonts = []; //Списъл с инсталираните шрифтове
 var installedFontsCount = 0; //Броя на инсталираните шрифтове
 
-var isFullScreen = false; //Проверка дали презентацията е в режим на представяне 
-//Променливи за откриване на viewport-width и viewport-height (размера на прозореца)
+//Променливи за откриване на viewport-width и viewport-height
 var w = Math.max(document.documentElement.clientWidth, window.innerWidth || 0);
 var h = Math.max(document.documentElement.clientHeight, window.innerHeight || 0);
 
@@ -78,71 +35,54 @@ $(function () {
 
 //Функция, която се стартира при нова презентация. Добавя първи слайд и го изчертава на екран
 function startNew() {
-    //Код за начало на презентация - добавя се един слайд, със син фон и едно текстово поле
-    slides = 1; //Слайдоветет стават 1
-    slideObjs[slides] = new slide(1, "#3399ff", 0, 2, 1); //Инициализация на нов слайд със съответните му параметри
+    //Тестов код - добавят се два слайда, един син и един червен. Добавя текст към единия слайд. 
+    slides = 1;
+    slideObjs[slides] = new slide(1, "#3399ff", 0, 2, 1);
 
-    slideObjCount++; //Увеличаване на броя на обектите в самия слайд
-    //Инициалзирация на ново текстово поле в масива с текстовите полета. 
-    textObjs[slideObjCount] = new textObj(slideObjCount, "Щракнете два пъти за да добавите текст", 10, 5, "Segoe UI", 1, 0, 0, 13, 15, "text", "#000000", "none");
-    slideObjs[1].items[0] = textObjs[slideObjCount]; //Добавяне на обекта към масива за текущия слайд
-    slideObjs[1].itemCount = 1; //Броя на обектите в слайда става 1 
 
-    drawSlide(slideObjs[1]); //Изчертаване на първия слайд
-    loadFonts(); //Зареждане на шрифтове
+    slideObjCount++;
+    textObjs[slideObjCount] = new textObj(slideObjCount, "Щракнете два пъти за да добавите текст", 10, 5, "Consolas", 3, 0, 0, 13, 15, "text", "#B40000");
+    slideObjs[1].items[0] = textObjs[slideObjCount];
+
+
+    // slideObjCount++;
+    // textObjs[slideObjCount] = new textObj(slideObjCount,"Secondary text!",20,5,0,0,0,0,15,10);
+    // slideObjs[1].items[1] = textObjs[slideObjCount];    
+    //slideObjs[1].itemCount = 2;
+    slideObjs[1].itemCount = 1;
+
+    //addNewSlide();
+    drawSlide(slideObjs[1]);
+    loadFonts();
+}
+function initSlide(idS) {
+
 }
 //Функция за преминаване към предишния слайд
 function prevSlide() {
-    if (curSlide > 1) { //Проверка дали не сме на първия слайд
-        curSlide--; //Намаляме индекса на текущия слайд с 1
-        drawSlide(slideObjs[curSlide]); //Изчертаване на новия слайд
+    if (curSlide > 1) {
+        curSlide--;
+        drawSlide(slideObjs[curSlide]);
         document.getElementById("curSlideNum").innerText = curSlide; //Временен код, който показва номера на текущия слайд
     }
+
 }
 //Функция за преминаване към следващия слайд
 function nextSlide() {
-    console.log(slides + " " + curSlide);
-    if (slides != curSlide) { //Проверка дали не сме на последния слайд
-        textBoxLoseFocus(); //Изключваме фокуса над всички обекти
-        curSlide++; //Увеличаваме индекса на текущия слайда с 1
-        drawSlide(slideObjs[curSlide]); //Изчертаване на новия слайд
+    if (slides != curSlide) {
+        textBoxLoseFocus();
+        curSlide++;
+        drawSlide(slideObjs[curSlide]);
         document.getElementById("curSlideNum").innerText = curSlide; //Временен код, който показва номера на текущия слайд
 
     }
 }
 //Изчертава текущия слайд на екрана
 function drawSlide(slideObjToDraw) {
-
-    var curSlideObj = document.getElementById("curSlide");  //Намираме слайда от DOM
-    curSlideObj.innerText = ""; //Задаваме му текста да е празен
-    curSlideObj.style.backgroundColor = slideObjToDraw.backColor; //Добавяме стойност за цвят на фона от масива с данни
-    //Функция за откриване на натиснат клавиш
-    $(document).keydown(function (e) {
-        switch (e.which) {
-
-            case 27: // esc
-                cefCustomObject.stopFullScreen();
-                stopPresenting();
-                break;
-            case 37: // left
-                prevSlide();
-                break;
-
-            case 38: // up
-                break;
-
-            case 39: // right
-                nextSlide();
-                break;
-
-            case 40: // down
-                break;
-
-            default: return; // exit this handler for other keys
-        }
-        e.preventDefault(); // prevent the default action (scroll / move caret)
-    });
-    curSlide = slideObjToDraw.id; //Задава индекса на текущия слайд да е id-то му в масива с данни
+    var curSlideObj = document.getElementById("curSlide");
+    curSlideObj.innerText = "";
+    curSlideObj.style.backgroundColor = slideObjToDraw.backColor;
+    curSlide = slideObjToDraw.id;
     document.getElementById("curSlideNum").innerText = curSlide; //Временен код, който показва номера на текущия слайд
 
     //Код за анимациите на преминаване между слайдовете
@@ -158,8 +98,8 @@ function drawSlide(slideObjToDraw) {
     }
 
     document.getElementById("curSlideNum").innerText = curSlide; //Временен код, който показва номера на текущия слайд
-    drawText(slideObjToDraw); //Изчертаваме текстовите обекти в текущия слайд
-    drawImg(slideObjToDraw); //Изчертаваме изображенията в текущия слайд
+    drawText(slideObjToDraw);
+    drawImg(slideObjToDraw);
 
     //Код за скриване на специализираните менюта за обекти
     $("#textTools").hide();
@@ -167,9 +107,9 @@ function drawSlide(slideObjToDraw) {
 }
 //Добавя нов слайд-обект към колекцията слайдове
 function addNewSlide() {
-    slides++; //Увеличаваме слайдовете с едно
-    slideObjs[slides] = new slide(slides, "#ffffff", 0, 0, 0); //Добавяне нов слайд
-    drawSlide(slideObjs[slides]); //Изчертаваме новия слайд
+    slides++;
+    slideObjs[slides] = new slide(slides, "#ffffff", 0, 0, 0);
+    drawSlide(slideObjs[slides]);
 }
 
 //Функция за фокусиране върху слайд, чрез премахване на фокуса от другите обекти
@@ -180,158 +120,123 @@ function focusOnSlide() {
 //Функция за преизчертаване на слайд
 function redrawSlide() {
     //Тестова функция
-    document.getElementById("curSlide").innerHTML = ""; //Изчиства DOM обекта
+    document.getElementById("curSlide").innerHTML = "";
 
-    drawSlide(slideObjs[curSlide]); //Изчертава текущия слайд
+    drawSlide(slideObjs[curSlide]);
 }
 
 //Функция за унищожаване на текуща презентация и всичко обекти свързани с нея
 function nukeSlides() {
-    slides = 0; //Занулява броя на слайдовете
-    curSlide = 0; //Занулява индекса на текущия слайд
-    slideObjCount = 0; //Занулавя броя на обектите в текущия слайд
+    slides = 0;
+    curSlide = 0;
+    slideObjCount = 0;
 
-    slideObjs = []; //Занулява обекта за обекти на слайда
-    textObjs = []; //Занулява обекта за текстове в слайда
-    document.getElementById("curSlide").innerHTML = ""; //Занулява текста в DOM-а
+    slideObjs = [];
+    textObjs = [];
+    document.getElementById("curSlide").innerHTML = "";
 }
 
 //Функция за промяна фоновия цвят на слайд
 function changeBGColor() {
+    var colorObj = document.createElement("input");
+    colorObj.type = "color";
+    colorObj.id = "colorChoose";
+    colorObj.name = "clrC";
+    colorObj.value = slideObjs[curSlide].backColor;
+    colorObj.hidden = true;
 
-    //Извиква colorDialog от приложението, което връща избрания цвят в hex формат
+    document.getElementById("curSlide").appendChild(colorObj);
+    document.getElementById('colorChoose').click();
 
-    var colorString = cefCustomObject.colorDialogFun(); //Присвоява резултата от функцията colorDialogFun();
-
-    document.getElementById("curSlide").style.backgroundColor = colorString; //Задава цвета на фона на база на потребителския избор
-    slideObjs[curSlide].backColor = colorString; //Записва стойността в масива 
+    document.getElementById('colorChoose').onchange = function (evt) {
+        document.getElementById("curSlide").style.backgroundColor = colorObj.value;
+        slideObjs[curSlide].backColor = colorObj.value;
+    }
+    document.getElementById('colorChoose').remove();
 
 }
-
 //*----------------------------------------*
 //Функции на текстовото поле
 //*----------------------------------------*
 //Функция за добавяне на текстово поле от потребителя
 function addTextField() {
-    slideObjCount++; //Увеличаване на идекса, отговарящ за броя на обектите в слайда
-    textObjs[slideObjCount] = new textObj(slideObjCount, "Click for text", 20, 15, "Segoe UI", 1, 0, 0, 13, 15, "text", "#000000", "none");
-    //Генериране на нов текстов обект със свойствата по подразбиране
-    slideObjs[curSlide].items[slideObjs[curSlide].itemCount] = textObjs[slideObjCount]; //Добавяне на текстовото поле към масива с данни
-    slideObjs[curSlide].itemCount++; //Увеличване на броя на елементите с 1
-    drawSlide(slideObjs[curSlide]); //Изчертаване на слайда
+    slideObjCount++;
+    textObjs[slideObjCount] = new textObj(slideObjCount, "Click for text", 20, 15, "Segoe UI", 3, 0, 0, 13, 15, "text", "#000000");
+    slideObjs[curSlide].items[slideObjs[curSlide].itemCount] = textObjs[slideObjCount];
+    slideObjs[curSlide].itemCount++;
+    drawSlide(slideObjs[curSlide]);
 }
 //Функция за чертане на текст върху слайд
 function drawText(slideObjsTextDraw) {
-    var curSlideObj = document.getElementById("curSlide"); //Намиране на текущия DOM обект
+    var curSlideObj = document.getElementById("curSlide");
 
-    for (i = 0; i < slideObjsTextDraw.itemCount; i++) { //Цикъл за преминаване през всеки обект на слайда
-        if (slideObjsTextDraw.items[i].type == "text") { //Проверка за типа на обекта
-            var textDiv = document.createElement("div"); //Създаване на DOM обект
 
-            textDiv.id = "text_s" + slideObjsTextDraw.id + "_t" + slideObjsTextDraw.items[i].id; //Присвояване на атрибути
-            textDiv.classList.add("staticText"); //и класове
+    for (i = 0; i < slideObjsTextDraw.itemCount; i++) {
+        if (slideObjsTextDraw.items[i].type == "text") {
+            var textDiv = document.createElement("div");
 
+            textDiv.id = "text_s" + slideObjsTextDraw.id + "_t" + slideObjsTextDraw.items[i].id;
+            textDiv.classList.add("staticText");
+
+            textDiv.style.fontSize = slideObjsTextDraw.items[i].fontSize + "vw";
             textDiv.style = "position:absolute;left:" + slideObjsTextDraw.items[i].positionL + "vw;top:" + slideObjsTextDraw.items[i].positionT +
                 "vw;right:" + slideObjsTextDraw.items[i].positionR +
                 "vw;bottom:" + slideObjsTextDraw.items[i].positionB + "vw;" + "font-family:" + slideObjsTextDraw.items[i].fontFamily + ";" +
                 "width:" + slideObjsTextDraw.items[i].widthO + "vw;" + "height:" + slideObjsTextDraw.items[i].heightO + "vh;" +
                 "word-wrap: break-word;" + "color:" + slideObjsTextDraw.items[i].fontColor;
-            //Стойностите на текстовото поле е от масива с данни 
-
-            if (slideObjsTextDraw.items[i].backColor != "none") { //Ако текстово поле трябва да има цвят за фон, го добавя
-                textDiv.style.backgroundColor = slideObjsTextDraw.items[i].backColor;
-            }
-            textDiv.style.fontSize = slideObjsTextDraw.items[i].fontSize + "vw";
-
             //"max-width:" + slideObjsTextDraw.items[i].widthO + "vw;" +
-            textDiv.innerHTML = slideObjsTextDraw.items[i].textC; //Добавяне на текста
+            textDiv.innerHTML = slideObjsTextDraw.items[i].textC;
 
-            textDiv.onmousedown = textBoxClicked; //Добавяне на събития
+            textDiv.onmousedown = textBoxClicked;
             //textDiv.onblur = textBoxLoseFocus;
             //textDiv.tabIndex = 1;
 
-            curSlideObj.appendChild(textDiv); //Добавяне на DOM обекта към DOM-а на слайда
+            curSlideObj.appendChild(textDiv);
         }
     }
-}
 
-//Функция за чертане на caption върху слайд
-function drawCaptionOnSlide(captionObjsTextDraw) {
-
-    //Кода за caption е почти идентичен с този за чертане на текстово поле
-    var curSlideObj = document.getElementById("curSlide"); //Намиране на текущия DOM обект
-    if (captionObjsTextDraw.type == "caption") { //Проверка за типа
-        var textDiv = document.createElement("div"); //Създаване на DOM обект
-
-        textDiv.id = "text_s" + captionObjsTextDraw.id + "_t" + captionObjsTextDraw.id; //Присвояване на атрибути
-        textDiv.classList.add("staticText"); //и класове
-
-        textDiv.style = "position:absolute;left:" + captionObjsTextDraw.positionL + "vw;top:" + captionObjsTextDraw.positionT +
-            "vw;right:" + captionObjsTextDraw.positionR +
-            "vw;bottom:" + captionObjsTextDraw.positionB + "vw;" + "font-family:" + captionObjsTextDraw.fontFamily + ";" +
-            "width:" + captionObjsTextDraw.widthO + "vw;" + "height:" + captionObjsTextDraw.heightO + "vh;" +
-            "word-wrap: break-word;" + "color:" + captionObjsTextDraw.fontColor;
-        //Стойностите са от масива с данни
-        if (captionObjsTextDraw.backColor != "none") { //Чертане на фон
-            textDiv.style.backgroundColor = captionObjsTextDraw.backColor;
-        }
-        textDiv.style.fontSize = captionObjsTextDraw.fontSize + "vw"; //Размер на шрифт
-        //"max-width:" + captionObjsTextDraw.items[i].widthO + "vw;" +
-        textDiv.innerHTML = captionObjsTextDraw.textC; //Добавяне на текста
-
-        textDiv.onmousedown = textBoxClicked; //Добавяне на събития
-        //textDiv.onblur = textBoxLoseFocus;
-        //textDiv.tabIndex = 1;
-
-        curSlideObj.appendChild(textDiv); //Добавяне на DOM обекта към DOM-а на слайда
-    }
 }
 
 //Функция за трансформиране на текстово поле в поле за редакция на текст
 function textBoxClicked(textBoxObj) {
-    //textBoxObj.target - обектът, върху който е мишката
     if (textBoxObj.target.classList.contains("textInputWrapper") == false && textBoxObj.target.classList.contains("staticText") == true) {
-        //Проверка дали текущия натиснат обект съдържа класовете, които сигнализират за текстово поле
 
-        //Анимации за показване на допълнителните менюта
         $("#slideTools").fadeOut();
         $("#textTools").fadeIn();
         $("#imgTools").fadeOut();
-
         //Създава input полето, което се използва за въвеждане на текст
         var editTextPrototype = document.createElement("textarea");
 
-        editTextPrototype.classList.add("textBox"); //Добавяне на необходимите класове
-        editTextPrototype.value = textBoxObj.target.innerText; //Добавяне на текста
-        editTextPrototype.onblur = textBoxLoseFocus; //Добавяне на събития
+        editTextPrototype.classList.add("textBox");
+        editTextPrototype.value = textBoxObj.target.innerText;
+        editTextPrototype.onblur = textBoxLoseFocus;
         editTextPrototype.autofocus = true;
 
 
         editTextPrototype.style = "width:" + textBoxObj.target.style.width + "; height:" + textBoxObj.target.style.height + ";" +
-            "margin:0px;" + "font-family:" + textBoxObj.target.style.fontFamily + ";" + "font-size:" + textBoxObj.target.style.fontSize;
+            "margin:0px;" + "font-family:" + textBoxObj.target.style.fontFamily + ";";
 
-        showFontSize(textBoxObj.target.style.fontSize);
         //С textBoxObj.target се достига до текущия натиснат обект
 
         textBoxObj.target.childNodes[0].nodeValue = ""; //.innerHTML прави проблеми
-        textBoxObj.target.classList.add("textInputWrapper"); //Добавяне на необходимите класове
+        textBoxObj.target.classList.add("textInputWrapper");
         textBoxObj.target.classList.add("editText");
         textBoxObj.target.classList.remove("staticText");
 
-        textBoxObj.target.tabIndex = 1; //Задаване на tabIndex, с цел да работи loseFocus()
+        textBoxObj.target.tabIndex = 1;
         //textBoxObj.target.onblur = textBoxLoseFocus;
 
-        $(".textInputWrapper").draggable(); //Възможност обекта да се мести с jQuery Drag&Drop API
+        $(".textInputWrapper").draggable();
 
-        textBoxObj.target.appendChild(editTextPrototype); //Добавяме обекта към DOM на главния текстов обект
+        textBoxObj.target.appendChild(editTextPrototype);
         textOn = false;
 
         curClickedObj = textBoxObj.target.id;
         //textBoxObj.target.children[0].select();
 
-        var selectObjL = document.getElementById("selectFont"); //Намираме диалога за избор на шрифт
+        var selectObjL = document.getElementById("selectFont");
 
-        for (i = 0; i < selectObjL.options.length; i++) { //Спрямо стойността на шрифт от масива с данни, избираме шрифта в select диалога
+        for (i = 0; i < selectObjL.options.length; i++) {
             if (selectObjL.options[i].value.toString().slice(0, -1) == textBoxObj.target.style.fontFamily) {
                 selectObjL.options[i].selected = true;
             }
@@ -342,15 +247,15 @@ function textBoxClicked(textBoxObj) {
 
 //Функция за трансформиране на поле за редакция на текст в обикновенно текстово поле
 function textBoxLoseFocus(clickedObj) {
-    var x = document.getElementById("curSlide").children; //x са елеме
+    var x = document.getElementById("curSlide").children;
     for (i = 0; i < x.length; i++) //Преминава през всички елементи в текущия слайд, x[i] е обект в слайда
     {
         if (x[i].classList.contains("editText") == true) //Ако текущия обект е текстово поле за редакция
         {
-            var curObjW, curObjH, curObjText, curObjT, curObjL; //Позиция и размер на обекта
 
-            //В зависимост от това, дали обекта е бил с променен размер, понякога размера се връща или в px или в vw
-            //Спрямо това, се определя размера на обекта в vw
+
+            var curObjW, curObjH, curObjText, curObjT, curObjL;
+
             if (x[i].children[0].style.width.slice(-2) == "vw") {
                 curObjW = x[i].children[0].style.width.slice(0, 2);
                 curObjH = x[i].children[0].style.height.slice(0, 2);
@@ -361,18 +266,17 @@ function textBoxLoseFocus(clickedObj) {
             }
 
 
-            curObjText = x[i].children[0].value; //Намираме текста от textarea 
-            curObjT = (x[i].offsetTop / w) * 100; //Намираме и позицията на обекта в vw
+            curObjText = x[i].children[0].value;
+            curObjT = (x[i].offsetTop / w) * 100;
             curObjL = (x[i].offsetLeft / w) * 100;
 
-            for (j = 0; j < slideObjs[curSlide].itemCount; j++) { //Преминаваме през всички обекти в масива от данни
+            for (j = 0; j < slideObjs[curSlide].itemCount; j++) {
                 if (x[i].id == "text_s" + slideObjs[curSlide].id + "_t" + slideObjs[curSlide].items[j].id && slideObjs[curSlide].items[j].type == "text") {
-                    //Ако текущия обект съвпада с някой от записите в масива, то на него се прехвърлят стойностите от DOM-а
-                    slideObjs[curSlide].items[j].widthO = curObjW;  //Ширина
-                    slideObjs[curSlide].items[j].heightO = curObjH; //Височина
-                    slideObjs[curSlide].items[j].textC = curObjText; //Текст
-                    slideObjs[curSlide].items[j].positionL = curObjL; //Позиция
-                    slideObjs[curSlide].items[j].positionT = curObjT; //Позиция
+                    slideObjs[curSlide].items[j].widthO = curObjW;
+                    slideObjs[curSlide].items[j].heightO = curObjH;
+                    slideObjs[curSlide].items[j].textC = curObjText;
+                    slideObjs[curSlide].items[j].positionL = curObjL;
+                    slideObjs[curSlide].items[j].positionT = curObjT;
                 }
             }
             //Код за премахване на текстовото поле и съответните класове
@@ -380,26 +284,22 @@ function textBoxLoseFocus(clickedObj) {
             x[i].classList.remove("editText");
             x[i].classList.add("staticText");
 
-            //Разширяваме div-а, който ще държи готовия текст, спрямо размера на textarea-та
             x[i].style.width = x[i].children[0].style.width;
             x[i].style.height = x[i].children[0].style.height;
 
-            x[i].removeChild(x[i].children[0]); //Премахваме textarea
+            x[i].removeChild(x[i].children[0]);
 
-            x[i].innerText = curObjText; //Прехвърляме текста
+            x[i].innerText = curObjText;
 
-            //Анимации за доплънителните менюта
             $("#slideTools").fadeIn();
             $("#textTools").fadeOut();
             $("#imgTools").fadeOut();
-            curClickedObj = ""; //Зануляваме натиснатия обект
+            curClickedObj = "";
         }
     }
 }
 
 function changeFontColor() {
-    //TODO:
-    //Да се пренапише, чрез WinForms API
     var colorObj = document.createElement("input");
     colorObj.type = "color";
     colorObj.id = "colorChooseFont";
@@ -407,13 +307,10 @@ function changeFontColor() {
     colorObj.value = slideObjs[curSlide].backColor;
     colorObj.hidden = true;
 
-
     document.getElementById("curSlide").appendChild(colorObj);
     document.getElementById('colorChooseFont').click();
 
-
     document.getElementById('colorChooseFont').onchange = function (evt) {
-
         document.getElementById(curClickedObj).style.color = colorObj.value;
 
         //slideObjs[curSlide].backColor = colorObj.value;
@@ -427,43 +324,28 @@ function changeFontColor() {
 
 }
 
-//Функция за промянв на шрифта
 function changeFont() {
-    var selectObjL = document.getElementById("selectFont"); //Намира DOM обекта, отговарящ за избор на шрифт
-    var x = document.getElementById("curSlide").children; //Прехвърля всички шрифтове към масив
+    var selectObjL = document.getElementById("selectFont");
+    var x = document.getElementById("curSlide").children;
 
-    document.getElementById(curClickedObj).style.fontFamily = selectObjL.value; //Задава текущия шрифт, който е избран в селектора за шрифт
-    document.getElementById(curClickedObj).children[0].style.fontFamily = selectObjL.value; //Ако обекта за текст е активиран, задава шрифта в textarea-та
+    document.getElementById(curClickedObj).style.fontFamily = selectObjL.value;
+    document.getElementById(curClickedObj).children[0].style.fontFamily = selectObjL.value;
 
     //slideObjs[curSlide].backColor = colorObj.value;
-    //Преминаваме през всички елементи на масива с данни и търсим къде се намира в масива текущия DOM обект
     for (j = 0; j < slideObjs[curSlide].itemCount; j++) {
-        if (x[j].id == "text_s" + slideObjs[curSlide].id + "_t" + slideObjs[curSlide].items[j].id && slideObjs[curSlide].items[j].type == "text") {
-            slideObjs[curSlide].items[j].fontFamily = selectObjL.value; //Задаваме му стойността от fontDialog-а
+        if (x[i].id == "text_s" + slideObjs[curSlide].id + "_t" + slideObjs[curSlide].items[j].id && slideObjs[curSlide].items[j].type == "text") {
+            slideObjs[curSlide].items[j].fontColor = colorObj.value;
         }
     }
 }
-function changeFontSize() {
-    var selectObjL = document.getElementById("selectFontSize"); //Намира DOM обекта, отговарящ за избор на шрифт
-    var x = document.getElementById("curSlide").children; //Прехвърля всички шрифтове към масив
 
-    console.log(selectObjL.value);
-    document.getElementById(curClickedObj).style.fontSize = selectObjL.value + "vw"; //Задава текущия шрифт, който е избран в селектора за шрифт
-    document.getElementById(curClickedObj).children[0].style.fontSize = selectObjL.value + "vw"; //Ако обекта за текст е активиран, задава шрифта в textarea-та
-
-    //slideObjs[curSlide].backColor = colorObj.value;
-    //Преминаваме през всички елементи на масива с данни и търсим къде се намира в масива текущия DOM обект
-    for (j = 0; j < slideObjs[curSlide].itemCount; j++) {
-        if (x[j].id == "text_s" + slideObjs[curSlide].id + "_t" + slideObjs[curSlide].items[j].id && slideObjs[curSlide].items[j].type == "text") {
-            slideObjs[curSlide].items[j].fontSize = selectObjL.value; //Задаваме му стойността от fontDialog-а
-        }
-    }
+function resizeableBox() {
+    alert("1");
 }
 
 //Функция за премахване на текстов обект
 function removeText() {
     var x = document.getElementById("curSlide").children; //Текущите обекти в слайда, x[i] е обект
-
     //Функцията ще претърси всичките обекти и ще открие записа в БД, съответсващ на обекта
     for (i = 0; i < slideObjs[curSlide].itemCount; i++) {
         if (curClickedObj == "text_s" + slideObjs[curSlide].id + "_t" + slideObjs[curSlide].items[i].id) {
@@ -475,91 +357,66 @@ function removeText() {
     }
     slideObjs[curSlide].itemCount--; //Намалява броя на елементите в слайда
 }
-function showFontSize(fontSizeVal) {
 
-    var valueFS = fontSizeVal.slice(0, -2);
-    var selectObjL = document.getElementById("selectFontSize"); //Намира DOM обекта, отговарящ за избор на шрифт
-
-    if(valueFS == "0.25" || valueFS == "0.75" || valueFS == "2.25" ||valueFS == "2.75" ||
-    valueFS == "3.25"|| valueFS == "3.75" || valueFS == "4.25" || valueFS == "4.75")
-    {
-        selectObjL.value = valueFS;  
-    }
-    else if(valueFS == "1" || valueFS == "2" || valueFS == "3" || valueFS == "4" || valueFS == "5")
-    {
-        valueFS = valueFS + ".00";
-        selectObjL.value = valueFS;
-    }
-    else
-    {
-        valueFS = valueFS + "0";
-        selectObjL.value = valueFS;
-    }
-    console.log(valueFS);
-    //Показва текущия размер на шрифта в полето за избор на шрифт
-    
-
-    //selectObjL.value = textBoxObj.target.style.fontSize;
-
-}
+//*----------------------------------------*
 //Функции на изображение
 //*----------------------------------------*
 
 function addImage() {
-    var imgUrl; //Променлива, която ще съдържа адреса на изображението
-    var inputObj = document.createElement("input");  //Създаване на формата за избиране на изображение
-    inputObj.type = "file"; //Тип на файла
-    inputObj.id = "tempInput"; //ID 
-    inputObj.hidden = true; //Да е скрит за потребителя
+    var imgUrl;
+    var inputObj = document.createElement("input");
+    inputObj.type = "file";
+    inputObj.id = "tempInput";
+    inputObj.hidden = true;
 
-    document.getElementById("curSlide").appendChild(inputObj); //Добавяме го към DOM-а
+    document.getElementById("curSlide").appendChild(inputObj);
 
-    document.getElementById("tempInput").click(); //Показване на формата
+    document.getElementById("tempInput").click();
 
-    slideObjs[curSlide].itemCount++; //Увеличаваме броя на обектите в слайда
-    var imgHolder = document.createElement("img"); //Създаване на img тага
-    imgHolder.id = "img_s" + slideObjs[curSlide].id + "_t" + slideObjs[curSlide].itemCount; //Задаване на стойностите
-    imgHolder.classList.add("imgContained"); //Добавяне на класове
+    slideObjs[curSlide].itemCount++;
+    console.log(slideObjs[curSlide].itemCount);
+    var imgHolder = document.createElement("img");
+    imgHolder.id = "img_s" + slideObjs[curSlide].id + "_t" + slideObjs[curSlide].itemCount;
+    imgHolder.classList.add("imgContained");
 
-    //Към този div контейнер се добавят събития, resize и dragDrop
-    var imgDivContainer = document.createElement("div"); //Създаване на div контейнер
+    var imgDivContainer = document.createElement("div");
     imgDivContainer.id = "imgD_s" + slideObjs[curSlide].id + "_t" + slideObjs[curSlide].itemCount;
 
-    imgDivContainer.appendChild(imgHolder); //Добавяме изображението към контейнера
+    imgDivContainer.appendChild(imgHolder);
 
-    imgDivContainer.classList.add("staticImg"); //Класове
-    document.getElementById("curSlide").appendChild(imgDivContainer); //Добавяне към DOM-а
+    imgDivContainer.classList.add("staticImg");
+    document.getElementById("curSlide").appendChild(imgDivContainer);
 
-    document.getElementById('tempInput').onchange = function (evt) { //След приключване на диалога за избор на файл се извиква тази функция
+    document.getElementById('tempInput').onchange = function (evt) {
         var tgt = evt.target || window.event.srcElement,
-            files = tgt.files; //Имаме target, спрямо резултата
+            files = tgt.files;
 
-        // Проверка за подръжка на FileReader
+        // FileReader support
         if (FileReader && files && files.length) {
-            var fr = new FileReader(); //Нов обект fileReader
-            fr.onload = function () { //След зареждане на fileReader се изпълнява следния код
+            var fr = new FileReader();
+            fr.onload = function () {
 
-                imgUrl = fr.result; //Намира се URL-а на изображението
+                imgUrl = fr.result;
                 //imgHolder.src = fr.result;
-                imgHolder.src = fr.result; //Типа се връща като base64/img - DataURL
-                imgDivContainer.onmousedown = imgClicked; //Задаваме събития на обекта
+                imgHolder.src = fr.result;
+                imgDivContainer.onmousedown = imgClicked;
                 imgDivContainer.onblur = imgLoseFocus;
-                imgDivContainer.tabIndex = 1; //TabIndex с цел да работи loseFocus();
-                imgDivContainer.style.width = imgHolder.clientWidth + "px"; //Задаваме размера спрямо контейнера
+                imgDivContainer.tabIndex = 1;
+                imgDivContainer.style.width = imgHolder.clientWidth + "px";
 
 
 
-                imgDivContainer.style.height = "400px"; //Този код трябва да се пипне
+                imgDivContainer.style.height = "400px";
+                console.log(imgHolder.clientHeight);
                 //CHANGED HERE
 
                 //imgHolder.classList.add("staticImg");
                 //$("#" + imgDivContainer.id).draggable();
 
-
-                var imgObjS = new imgObj(slideObjs[curSlide].itemCount, imgHolder.src, 0, 0, 0, (imgHolder.clientWidth / w) * 100,
-                    (imgHolder.clientHeight / h) * 100, "none");
+                var imgObjS = new imgObj(slideObjs[curSlide].itemCount, imgHolder.src, 0, 0, 0, (imgHolder.clientWidth / w) * 100, (imgHolder.clientHeight / h) * 100);
                 slideObjs[curSlide].items[slideObjs[curSlide].itemCount - 1] = imgObjS;
 
+                console.log(imgObjS);
             }
             fr.readAsDataURL(files[0]);
 
@@ -575,18 +432,21 @@ function addImage() {
 
 
 }
-//Функция за изчертаване на изображение
 function drawImg(slideObjsTextDraw) {
-    var curSlideObj = document.getElementById("curSlide"); //Намираме текущия DOM обект
+    var curSlideObj = document.getElementById("curSlide");
 
-    for (i = 0; i < slideObjsTextDraw.itemCount; i++) { //Преминаваме през всички обекти в масива с данни    
-        if (slideObjsTextDraw.items[i].type == "img") { //Ако типа на обекта е изображение, преминава към изчертаването му
 
-            var imgDivContainer = document.createElement("div"); //Създаваме контейнер за изображението
-            imgDivContainer.id = "imgD_s" + slideObjs[curSlide].id + "_t" + slideObjs[curSlide].items[i].id;
+    for (i = 0; i < slideObjsTextDraw.itemCount; i++) {
+        if (slideObjsTextDraw.items[i].type == "img") {
+
+            console.log(slideObjs[1]);
+            console.log(curSlide);
+            var imgDivContainer = document.createElement("div");
+            imgDivContainer.id = "imgD_s" + slideObjs[curSlide].id + "_t" + slideObjs[curSlide].itemCount;
             imgDivContainer.style = "position:absolute;left:" + slideObjsTextDraw.items[i].positionL + "vw;top:" + slideObjsTextDraw.items[i].positionT +
                 "vh;width:" + slideObjsTextDraw.items[i].widthO + "vw;" + "height:" + slideObjsTextDraw.items[i].heightO + "vh;"
 
+            console.log(slideObjsTextDraw.items[i].widthO);
             var imgHolder = document.createElement("img");
             imgHolder.id = "img_s" + slideObjs[curSlide].id + "_t" + slideObjs[curSlide].itemCount;
             imgHolder.src = slideObjsTextDraw.items[i].imgUrl;
@@ -598,9 +458,8 @@ function drawImg(slideObjsTextDraw) {
 
             imgDivContainer.tabIndex = 1;
 
-            if (slideObjsTextDraw.items[i].captionO != "none") {
-                drawCaptionOnSlide(slideObjsTextDraw.items[i].captionO);
-            }
+
+
             imgDivContainer.appendChild(imgHolder);
 
             curSlideObj.appendChild(imgDivContainer);
@@ -628,7 +487,7 @@ function imgClicked(imgObjClick) {
     imgObjClick.target.parentNode.tabIndex = 1;
 
     curClickedObj = imgObjClick.target.parentNode.id;
-
+    
     $("#slideTools").fadeOut();
     $("#textTools").fadeOut();
     $("#imgTools").fadeIn();
@@ -642,6 +501,8 @@ function imgLoseFocus() {
         if (x[i].classList.contains("editImg") == true) //Ако текущия обект е текстово поле за редакция
         {
             var curObjW, curObjH, curObjT, curObjL;
+
+
 
             curObjT = (x[i].offsetTop / h) * 100;
             curObjL = (x[i].offsetLeft / w) * 100;
@@ -670,9 +531,6 @@ function imgLoseFocus() {
             x[i].onblur = imgLoseFocus;
             x[i].tabIndex = 1;
 
-            $("#slideTools").fadeIn();
-            $("#textTools").fadeOut();
-            $("#imgTools").fadeOut();
         }
 
     }
@@ -680,7 +538,7 @@ function imgLoseFocus() {
 
 //Функция за премахване на обект изображение
 function removeImg() {
-
+    
     var x = document.getElementById("curSlide").children; //Текущите обекти в слайда, x[i] е обект
     //Функцията ще претърси всичките обекти и ще открие записа в БД, съответсващ на обекта
     for (i = 0; i < slideObjs[curSlide].itemCount; i++) {
@@ -695,69 +553,7 @@ function removeImg() {
 }
 
 //Функция за добавяне заглавие под картинка
-function imgAddCaption() {
-    var x = document.getElementById("curSlide").children; //Текущите обекти в слайда, x[i] е обект
-    var objDb = document.getElementById(curClickedObj); //Обект, който ще съдържа записа на текущото изображение в списъка с обекти
-
-    var curObjW, curObjH, curObjT, curObjL; //Променливи съдържащи размера и позицията на обекта
-
-    curObjT = (objDb.offsetTop / h) * 100;
-    curObjL = (objDb.offsetLeft / w) * 100;
-
-    if (objDb.style.width.slice(-2) == "vw") {
-        curObjW = objDb.style.width.slice(0, 2);
-        curObjH = objDb.style.height.slice(0, 2);
-    }
-    else if (objDb.style.width.slice(-2) == "px") {
-        curObjW = ((objDb.style.width.slice(0, -2)) / w) * 100;
-        curObjH = ((objDb.style.height.slice(0, -2)) / h) * 100;
-    }
-
-
-
-    var captionObj = new textObj(("c" + slideObjs[curSlide].itemCount), "Щракнете два пъти за да добавите текст", curObjT + ((curObjH * (9 / 16)) / 2.5), curObjL + (curObjW) / 2.5, "Segoe UI",
-        1, 0, 0, 20, 5, "caption", "#B40000", "none");
-    //Прототип на caption обекта
-
-
-    for (var i = 1; i < slideObjs[curSlide].itemCount; i++) {
-
-        //slideObjs[curSlide].items[i].id == curClickedObj
-        if (curClickedObj == "imgD_s" + slideObjs[curSlide].id + "_t" + slideObjs[curSlide].items[i].id) {
-            console.log("1");
-            slideObjs[curSlide].items[i].captionO = captionObj;
-        }
-    }
-    //curClickedObj.caption = captionObj; //Слага обекта caption като стойност на изображението
-    drawCaptionOnSlide(captionObj); //Изчертата обекта
-
-
-
-}
-
-
-//Функция за изпълнение
-function playImpress() {
-    cefCustomObject.startFullScreen();
-    isFullScreen = true;
-
-    $("#topBar").hide();
-    $("#leftBar").hide();
-    $("#rightBar").hide();
-
-    document.getElementById("curSlide").style.width = "100vw";
-    document.getElementById("curSlide").style.height = "100vh";
-    document.getElementById("curSlide").style.top = "0vw";
-    document.getElementById("curSlide").style.left = "0vw";
-}
-
-function stopPresenting() {
-    $("#topBar").show();
-    $("#leftBar").show();
-    $("#rightBar").show();
-
-    document.getElementById("curSlide").style.width = "72vw";
-    document.getElementById("curSlide").style.height = "40.5vw";
-    document.getElementById("curSlide").style.top = "13vh";
-    document.getElementById("curSlide").style.left = "11vw";
+function imgAddCaption()
+{
+    
 }
