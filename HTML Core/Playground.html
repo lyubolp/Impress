@@ -11,11 +11,9 @@
     <link rel="shortcut icon" href="Icon.ico" />
 
     <!-- Библиотеки -->
-    <!-- <script src="Libs/jquery-3.2.1.min.js"></script>
-    <script src="Libs/jquery-ui.js"></script> -->
+    <script src="Libs/jquery-3.2.1.min.js"></script>
+    <script src="Libs/jquery-ui.js"></script>
 
-    <script src="https://code.jquery.com/jquery-1.12.4.js"></script>
-    <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
     <!-- Заглавие на страницата -->
     <title>Impress </title>
 
@@ -25,47 +23,60 @@
     <link rel="stylesheet" href="CSS/UI.css">
 
     <!-- JavaScript файлове -->
-
+    <script src="JS/textFunctions.js"></script>
     <script src="JS/userSide.js"></script>
     <script src="JS/objectTypes.js"></script>
+    <script src="JS/listFunctions.js"></script>
     <style>
-        #testBtn {
-            background-color: #3399ff;
-            width: 10vw;
-            height: 5vw;
+        #textBoxPrototype {
+            width: 30vw;
+            height: 10vw;
         }
 
-        .img {
-            width: 100%;
-            height: 100%;
+        #newSelect {
+            width: 60vh;
+            height: 3vw;
+            font-size: 1.5vw;
+            border-radius: 0.3vw;
+            color: #5E5D5E;
         }
 
-        .testeditImg {
-            border: 5px dashed #787171;
+        option {
+            font-size: 1vw;
+            width: 50vh;
         }
 
-        #testBox {
-            width: 200px;
-            height: 200px;
-            background-color: #E57220;
+        #list1 {
+            position: absolute;
+            left: 1vw;
+            top: 1vw;
         }
     </style>
     <script>
-        function testCode() {
-            document.getElementById("imgContainer").style.width = "600px";
-            console.log(document.getElementById("testImg").width);
-
+        function load()
+        {
+            console.log("1");
+            var testBox = new listObj(1, "u", "d", ["Item 1", "Item 2 ", "Item 3", "Item 4"], 4, 10, 5, 0, 10, "Segoe UI", 1, "none", "#000000", "none" );
+            var testSlide =  new slide(1, "#3399ff", 0, 2, 1);
+            testSlide.items[0] = testBox;
+            loadList(testSlide);
+            console.log("2");
         }
-        $(function () {
-            $("#imgContainer").resizable();
-            $("#imgContainer").draggable();
-        });
     </script>
 </head>
 
-<body id="mainBody" onload="testCode()">
-    <div id="imgContainer" class="testeditImg" draggable="true">
-        <img src="testImg.png" id="testImg" class="img" />
+<body id="mainBody" onload="load()">
+
+    <div id="content">
+        <div id="curSlide">
+            <div id="list1" class="listEdit">
+                <div id="li1" class="liEdit">Item 1</div>
+                <div id="li2" class="liEdit">Item 2</div>
+                <div id="li3" class="liEdit">Item 3</div>
+                <div id="li4" class="liEdit">Item 4</div>
+                <div id="liAddItem" class="liEdit">Добави</div>
+            </div>
+        </div>
     </div>
 
 
