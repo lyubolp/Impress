@@ -3,10 +3,14 @@ body
     background-color: #595353;
     font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
     font-size:1vw;
-    color:white;
+    /*color:white;*/
 }
 textarea
 {
     font-size:1vw;
     margin:0px;
+}
+img
+{
+    z-index: -1;
 }
